@@ -1,0 +1,23 @@
+package edu.duke.ch450.battleship;
+
+public class BattleShipBoard {
+  private final int width;
+  private final int height;
+  public int getWidth(){
+    return this.width;
+  };  
+  public int getHeight(){
+    return this.height;
+  };
+  public BattleShipBoard(int w, int h){
+    if(w <= 0){
+      throw new IllegalArgumentException("BattleShipBoard's width must be positivie but is " + w);
+    }
+    if(h <= 0){
+      throw new IllegalArgumentException("BattleShipBoard's height must be positive but is " + h);
+      
+    }
+    this.width = w;
+    this.height = h;
+  }
+}
