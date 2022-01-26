@@ -6,20 +6,38 @@ package edu.duke.ch450.battleship;
 public class Placement {
   private final Coordinate where;
   private final char orientation;
-
+  /**
+   *Get the Coordinate where
+*/
 
   public Coordinate getWhere(){
     return this.where;
   }
-
+  /**
+   *Get the char orientation
+*/
   public char getOrientation(){
     return Character.toUpperCase(this.orientation);
   }
+
+  /**
+   * Consructs a placement, given the coordinate and char. 
+   * @param coordi is the coordinate
+   * @param ori is the orientation char
+
+*/
   
   public Placement(Coordinate coordi, char ori){
     this.where = coordi;
     this.orientation = Character.toUpperCase(ori);
   }
+
+  /**
+   * Consructs a placement, given the string of valid format(e.g.,"A2D").
+   * 
+   * @param str is the string of placement info
+   * @throws Illegalargumentexception if the string length is not 3 because of the constructor of Coordinate.
+   */
 
   public Placement(String str){
     Coordinate coordi = new Coordinate(str.substring(0,2));
@@ -27,6 +45,13 @@ public class Placement {
     this.where = coordi;
     this.orientation = c;
   }
+
+  /**
+   * This check if an object is equal to the placement.
+   * 
+   * @param o is the object to check
+   * @return the boolean result of equal check
+   */
 
   @Override
   public boolean equals(Object o) {
@@ -39,11 +64,22 @@ public class Placement {
     return false; 
   }
   
+  /**
+   * This converts placement.toString() to hashcode.
+   * 
+   * @return the resulted placement hashcode 
+   */
+  
   @Override
   public int hashCode(){
     return toString().hashCode();
   }
 
+   /**
+   * This combines and converts coordinate and char orientation to string.
+   *
+   * @return the string combined
+   */
   @Override
   public String toString(){
     return where.toString()+orientation;
