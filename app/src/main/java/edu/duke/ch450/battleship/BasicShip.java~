@@ -1,0 +1,55 @@
+package edu.duke.ch450.battleship;
+
+import java.util.ArrayList;
+
+public class BasicShip<T> implements Ship<T>{
+  private final Coordinate myLocation;
+  protected final ArrayList<Ship<T>> myShips;
+  public BasicShip(Coordinate coordi){
+    this.myLocation = coordi;
+    myShips = new ArrayList<Ship<T>>();
+  }
+  @Override
+  public boolean occupiesCoordinates(Coordinate where) {
+    // TODO Auto-generated method stub
+    return where.equals(myLocation);
+  }
+
+  @Override
+  public boolean isSunk() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public void recordHitAt(Coordinate where) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public boolean wasHitAt(Coordinate where) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public Character getDisplayInfoAt(Coordinate where) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public boolean tryAddShip(Ship<T> toAdd){
+    return false;
+  }
+
+  public T whatIsAt(Coordinate where) {
+    for (Ship<T> s: myShips) {
+      if (s.occupiesCoordinates(where)){
+        return s.getDisplayInfoAt(where);
+      }
+    }
+    return null;
+  }
+
+}

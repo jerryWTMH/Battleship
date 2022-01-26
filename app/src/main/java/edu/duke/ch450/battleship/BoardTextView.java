@@ -12,12 +12,12 @@ public class BoardTextView{
     /**
      *The Board to display
      */
-    private final Board toDisplay;
+    private final Board<Character> toDisplay;
     /**
      * Constructs a BoardView, given the board it will display.
      * @param toDisplay is the Board to display
      */
-    public BoardTextView(Board toDisplay){
+    public BoardTextView(Board<Character> toDisplay){
       this.toDisplay = toDisplay;
       if(toDisplay.getWidth() > 10 || toDisplay.getHeight() > 26){
         throw new IllegalArgumentException(                                    "Board must be no larger than 10x26, but is " + toDisplay.getWidth() + "x" + toDisplay.getHeight());

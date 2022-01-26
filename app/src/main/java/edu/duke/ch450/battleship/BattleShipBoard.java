@@ -1,8 +1,11 @@
 package edu.duke.ch450.battleship;
 
-public class BattleShipBoard implements Board{
+import java.util.ArrayList;
+
+public class BattleShipBoard<T> implements Board<T>{
   private final int width;
   private final int height;
+  private final ArrayList<Ship<T>> myShips;
   public int getWidth(){
     return this.width;
   };  
@@ -25,5 +28,29 @@ public class BattleShipBoard implements Board{
     }
     this.width = w;
     this.height = h;
+    Coordinate location = new Coordinate(w,h);
+    this.myShips = new ArrayList<Ship<T>>();
   }
+  /**
+   *Try to add ship into the ship ArrayList!
+   */
+
+  public boolean tryAddShip(Ship<T> toAdd){
+    this.myShips.add(toAdd);
+    return true;
+  }
+
+  /**
+   * Get what is the value of the element at input coordinate
+   */
+  public T whatIsAt(Coordinate where) {
+    for (Ship<T> s: myShips) {
+      if (s.occupiesCoordinates(where)){
+        return s.getDisplayInfoAt(where);
+      }
+    }
+    return null;
+  }
+
+  
 }
