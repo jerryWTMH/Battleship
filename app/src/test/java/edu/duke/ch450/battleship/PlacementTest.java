@@ -7,23 +7,32 @@ import org.junit.jupiter.api.Test;
 public class PlacementTest {
   @Test
   public void test_getter() {
-    Coordinate coordi = new Coordinate(1,2);
-    Coordinate coordi2 = new Coordinate(1,2);
+    Coordinate coordi = new Coordinate(1, 2);
+    Coordinate coordi2 = new Coordinate(1, 2);
     Placement p = new Placement(coordi, 'V');
     assertEquals(p.getOrientation(), 'V');
     assertEquals(p.getWhere(), coordi2);
   }
-  @Test
-  public void test_toString(){
-    Placement p = new Placement("A2D");
-    assertEquals("(0,2)D",p.toString());
+
+  @Test void test_case_sensitive(){
+    Coordinate coordi = new Coordinate(1,2);
+    Placement p = new Placement(coordi, 'v');
+    assertEquals(p.getOrientation(), 'V');
+    assertThrows(IllegalArgumentException.class, ()-> new Placement(coordi, 'z'));
   }
+
   @Test
-  public void test_equals(){
-    Placement p1 = new Placement("A2D");
-    Placement p2 = new Placement("A2D");
-    Placement p3 = new Placement("B3E");
-    Placement p4 = new Placement("B3D");
+  public void test_toString() {
+    Placement p = new Placement("A2V");
+    assertEquals("(0,2)V", p.toString());
+  }
+
+  @Test
+  public void test_equals() {
+    Placement p1 = new Placement("A2V");
+    Placement p2 = new Placement("A2V");
+    Placement p3 = new Placement("B3H");
+    Placement p4 = new Placement("B3V");
     assertEquals(p1, p2);
     assertEquals(p1, p1);
     assertNotEquals(p1, p3);
@@ -31,16 +40,32 @@ public class PlacementTest {
     assertNotEquals(p4, "B3");
   }
 
+  /**
+   * The first two testcases are testing about whether the input of Placement is too short or contains invalid character.
+  */
+
   @Test
-  public void test_hashCode(){
-    Placement p1 = new Placement("A2D");
-    Placement p2 = new Placement("A2D");
-    Placement p3 = new Placement("A1C");
+  public void strConstructor() {
+    assertThrows(IllegalArgumentException.class, () -> new Placement("B0"));
+    assertThrows(IllegalArgumentException.class, () -> new Placement("B0Z"));
+    Placement p1 = new Placement("B0V");
+    Placement p2 = new Placement("B0v");
+    Placement p3 = new Placement("C7V");
+    assertEquals(p1, p2);
+    assertNotEquals(p1, p3);
+    assertNotEquals(p2, p3);
+  }
+
+  @Test
+  public void test_hashCode() {
+    Placement p1 = new Placement("A2V");
+    Placement p2 = new Placement("A2V");
+    Placement p3 = new Placement("A1H");
     Placement p4 = new Placement("A2H");
-    assertEquals(p1.hashCode(),p2.hashCode());
-    assertNotEquals(p2.hashCode(),p3.hashCode());
-    assertNotEquals(p2.hashCode(),p4.hashCode());
-    assertNotEquals(p4.hashCode(),p3.hashCode());
+    assertEquals(p1.hashCode(), p2.hashCode());
+    assertNotEquals(p2.hashCode(), p3.hashCode());
+    assertNotEquals(p2.hashCode(), p4.hashCode());
+    assertNotEquals(p4.hashCode(), p3.hashCode());
 
   }
- }
+}

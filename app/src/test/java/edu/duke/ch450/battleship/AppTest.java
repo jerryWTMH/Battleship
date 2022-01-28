@@ -3,12 +3,56 @@
  */
 package edu.duke.ch450.battleship;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+  /*
+   * @Test void appHasAGreeting() { App classUnderTest = new App();
+   * assertNotNull(classUnderTest.getGreeting(), "app should have a greeting"); }
+   */
+  @Test
+  void test_read_placement() throws IOException {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    App app = generate_app_helper("B2V\nC8H\na4v\n",bytes);
+    String prompt = "Please enter a location for a ship:";
+    Placement[] expected = new Placement[3];
+    expected[0] = new Placement(new Coordinate(1, 2), 'V');
+    expected[1] = new Placement(new Coordinate(2, 8), 'H');
+    expected[2] = new Placement(new Coordinate(0, 4), 'V');
+    for (int i = 0; i < expected.length; i++) {
+      Placement p = app.readPlacement(prompt);
+      assertEquals(p, expected[i]); // did we get the right Placement back
+      assertEquals(prompt + "\n", bytes.toString()); // should have printed prompt and newline
+      bytes.reset(); // clear out bytes for next time around
     }
+  }
+
+  @Test
+  App generate_app_helper(String str,ByteArrayOutputStream bytes) {
+    StringReader sr = new StringReader(str);
+    PrintStream ps = new PrintStream(bytes, true);
+    Board<Character> b = new BattleShipBoard<Character>(3, 2);
+    App app = new App(b, sr, ps);
+    return app;
+  }
+
+  @Test
+  void test_do_one_replacement() throws IOException{
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    App app = generate_app_helper("A0H\n",bytes);
+    String expectedHeader = "  0|1|2\n";
+    String expectedBody = "A s| |  A\n"+ "B  | |  B\n";
+    String expected = "Where would you like to put your ship?\n" + expectedHeader + expectedBody + expectedHeader + "\n";
+    app.doOnePlacement();
+    assertEquals(expected, bytes.toString());
+    
+  }
 }
