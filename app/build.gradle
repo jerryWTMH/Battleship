@@ -40,3 +40,7 @@ test{
         exceptionFormat = 'full'
     }
 }
+
+run{
+    standardInput = System.in
+}

@@ -8,10 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 class AppTest {
   /*
@@ -21,7 +25,7 @@ class AppTest {
   @Test
   void test_read_placement() throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    App app = generate_app_helper("B2V\nC8H\na4v\n",bytes);
+    App app = generate_app_helper("B2V\nC8H\na4v\n", bytes);
     String prompt = "Please enter a location for a ship:";
     Placement[] expected = new Placement[3];
     expected[0] = new Placement(new Coordinate(1, 2), 'V');
@@ -35,8 +39,12 @@ class AppTest {
     }
   }
 
+  /**
+   * A helper function to automatically generate an app. It would have
+   * StringReader, PrintSream, Board as three input parameters.
+   */
   @Test
-  App generate_app_helper(String str,ByteArrayOutputStream bytes) {
+  App generate_app_helper(String str, ByteArrayOutputStream bytes) {
     StringReader sr = new StringReader(str);
     PrintStream ps = new PrintStream(bytes, true);
     Board<Character> b = new BattleShipBoard<Character>(3, 2);
@@ -44,15 +52,47 @@ class AppTest {
     return app;
   }
 
+  /**
+   * add one ship into our board, and test whether it is correct ornot with the
+   * function of doOnePlacement() in App.java
+   */
   @Test
-  void test_do_one_replacement() throws IOException{
+  void test_do_one_replacement() throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    App app = generate_app_helper("A0H\n",bytes);
+    App app = generate_app_helper("A0H\n", bytes);
     String expectedHeader = "  0|1|2\n";
-    String expectedBody = "A s| |  A\n"+ "B  | |  B\n";
-    String expected = "Where would you like to put your ship?\n" + expectedHeader + expectedBody + expectedHeader + "\n";
+    String expectedBody = "A s| |  A\n" + "B  | |  B\n";
+    String expected = "Where would you like to put your ship?\n" + expectedHeader + expectedBody + expectedHeader
+        + "\n";
     app.doOnePlacement();
     assertEquals(expected, bytes.toString());
-    
+  }
+
+  /**
+   * Test main function, and we would like to use input.txt and out.txt to record
+   * the input and output from our test.
+   */
+  @Test
+  @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
+  void test_main() throws IOException {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    PrintStream out = new PrintStream(bytes, true);
+    InputStream input = getClass().getClassLoader().getResourceAsStream("input.txt");
+    assertNotNull(input);
+    InputStream expectedStream = getClass().getClassLoader().getResourceAsStream("output.txt");
+    assertNotNull(expectedStream);
+    InputStream oldIn = System.in;
+    PrintStream oldOut = System.out;
+    try {
+      System.setIn(input);
+      System.setOut(out);
+      App.main(new String[0]);
+    } finally {
+      System.setIn(oldIn);
+      System.setOut(oldOut);
+    }
+    String expected = new String(expectedStream.readAllBytes());
+    String actual = bytes.toString();
+    assertEquals(expected, actual);
   }
 }
