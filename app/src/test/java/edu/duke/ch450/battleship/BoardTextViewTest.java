@@ -77,7 +77,7 @@ public class BoardTextViewTest {
 
     // Adding ship now!
     Coordinate c1 = new Coordinate(2,3);
-    BasicShip s1 = new BasicShip(c1);
+    RectangleShip<Character> s1 = new RectangleShip<Character>(c1, 's', '*');
     b1.tryAddShip(s1);
     String Body2=
       "A  | | |  A\n"+
@@ -87,7 +87,7 @@ public class BoardTextViewTest {
     BoardHelper(4,4,expectedHeader, Body2, b1);
     // Adding one more ship!
     Coordinate c2 = new Coordinate(0,0);
-    BasicShip s2 = new BasicShip(c2);
+    RectangleShip<Character> s2 = new RectangleShip<Character>(c2, 's', '*');
     b1.tryAddShip(s2);
     String Body3=
       "A s| | |  A\n"+

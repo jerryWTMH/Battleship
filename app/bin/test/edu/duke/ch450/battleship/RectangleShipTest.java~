@@ -1,0 +1,31 @@
+package edu.duke.ch450.battleship;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashSet;
+
+import org.junit.jupiter.api.Test;
+
+public class RectangleShipTest {
+
+  /**
+   * This is a simple test to check whether the makeCoords() can work correctly or
+   * not? Just change the parameters inside of the rc.makeCoords() Also remember
+   * to change to limitation in the for loop
+   */
+  @Test
+  public void test_makeCoords() {
+    Coordinate c1 = new Coordinate(0, 1);
+    RectangleShip<Character> rc = new RectangleShip<Character>(c1, 's', '*');
+    int width = 1;
+    int height = 3;
+    HashSet<Coordinate> response_set = rc.makeCoords(c1,width,height);
+    for (int r = 0; r < 0 + height; r++) {
+      for (int c = 1; c < 1 + width; c++) {
+        Coordinate temp = new Coordinate(r, c);
+        assertTrue(response_set.contains(temp));
+      }
+    }
+  }
+
+}
