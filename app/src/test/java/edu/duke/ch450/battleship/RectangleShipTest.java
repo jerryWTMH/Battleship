@@ -1,5 +1,6 @@
 package edu.duke.ch450.battleship;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,7 +50,7 @@ public class RectangleShipTest {
     Coordinate coordi2 = new Coordinate(1, 3);
     Coordinate coordi3 = new Coordinate(2, 2);
     Coordinate coordi4 = new Coordinate(2, 3);
-    RectangleShip<Character> s1 = new RectangleShip<Character>(coordi1, 2, 2, 's', '*');
+    RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", coordi1, 2, 2, 's', '*');
     assertTrue(s1.myPieces.containsKey(coordi1));
     assertTrue(s1.myPieces.containsKey(coordi2));
     assertTrue(s1.myPieces.containsKey(coordi3));
@@ -60,7 +61,7 @@ public class RectangleShipTest {
   public void test_recordHit() {
     Coordinate coordi1 = new Coordinate(1, 2);
     Coordinate hit_point = new Coordinate(2, 2);
-    RectangleShip<Character> s1 = new RectangleShip<Character>(coordi1, 2, 2, 's', '*');
+    RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", coordi1, 2, 2, 's', '*');
     s1.recordHitAt(hit_point);
     assertTrue(s1.myPieces.get(hit_point));
     assertFalse(s1.myPieces.get(coordi1));
@@ -70,7 +71,7 @@ public class RectangleShipTest {
   public void test_wasHitAt() {
     Coordinate coordi1 = new Coordinate(1, 2);
     Coordinate hit_point = new Coordinate(2, 2);
-    RectangleShip<Character> s1 = new RectangleShip<Character>(coordi1, 2, 2, 's', '*');
+    RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", coordi1, 2, 2, 's', '*');
     s1.recordHitAt(hit_point);
     assertTrue(s1.wasHitAt(hit_point));
     assertFalse(s1.wasHitAt(coordi1));
@@ -80,7 +81,7 @@ public class RectangleShipTest {
   public void test_isSunk() {
     Coordinate coordi1 = new Coordinate(1, 2);
     Coordinate hit_point = new Coordinate(2, 2);
-    RectangleShip<Character> s1 = new RectangleShip<Character>(coordi1, 2, 2, 's', '*');
+    RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", coordi1, 2, 2, 's', '*');
     s1.recordHitAt(hit_point);
     assertFalse(s1.isSunk());
     Coordinate hit_point2 = new Coordinate(1, 3);
@@ -90,6 +91,7 @@ public class RectangleShipTest {
     s1.recordHitAt(hit_point2);
     s1.recordHitAt(hit_point3);
     assertTrue(s1.isSunk());
+    assertEquals("submarine", s1.getName());
     //assertThrows(IllegalArgumentException.class, ()->s1.)
   }
 
@@ -97,7 +99,7 @@ public class RectangleShipTest {
   public void test_coordinate_not_in_ship(){
     Coordinate c1 = new Coordinate(8,4);
     Coordinate c2 = new Coordinate(7,5);
-    RectangleShip<Character> s1 = new RectangleShip<Character>(c1, 2, 3, 's', '*');
+    RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", c1, 2, 3, 's', '*');
     assertThrows(IllegalArgumentException.class,()->s1.checkCoordinateInThisShip(c2));
   }
 

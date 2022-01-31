@@ -61,7 +61,7 @@ class AppTest {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     App app = generate_app_helper("A0H\n", bytes);
     String expectedHeader = "  0|1|2\n";
-    String expectedBody = "A s| |  A\n" + "B  | |  B\n";
+    String expectedBody = "A d|d|d A\n" + "B  | |  B\n";
     String expected = "Where would you like to put your ship?\n" + expectedHeader + expectedBody + expectedHeader
         + "\n";
     app.doOnePlacement();

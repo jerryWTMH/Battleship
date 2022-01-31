@@ -28,14 +28,16 @@ public class App {
     return new Placement(s);
   }
 
-  public void doOnePlacement() throws IOException{
+  public void doOnePlacement() throws IOException {
     String prompt = "Where would you like to put your ship?";
     Placement p1 = readPlacement(prompt);
-    Coordinate coordi = p1.getWhere(); 
-    Ship<Character> s1 = new RectangleShip<Character>(coordi, 's', '*');
-    theBoard.tryAddShip(s1);
+    Coordinate coordi = p1.getWhere();
+    final AbstractShipFactory<Character> shipFactory;
+    shipFactory = new V1ShipFactory();
+    Ship<Character> s = shipFactory.makeDestroyer(p1);
+    theBoard.tryAddShip(s);
     out.println(view.displayMyOwnBoard());
-    
+
   }
 
   public static void main(String[] args) throws IOException {
@@ -44,5 +46,6 @@ public class App {
     PrintStream out = System.out;
     App app = new App(b1, r, out);
     app.doOnePlacement();
+
   }
 }
