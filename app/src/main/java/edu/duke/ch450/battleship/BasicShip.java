@@ -65,4 +65,11 @@ public abstract class BasicShip<T> implements Ship<T>{
    checkCoordinateInThisShip(where);
    return myDisplayInfo.getInfo(where, wasHitAt(where));
   }
+
+  @Override
+  public Iterable<Coordinate> getCoordinates(){
+    return myPieces.keySet();
+  }
+
+  
 }

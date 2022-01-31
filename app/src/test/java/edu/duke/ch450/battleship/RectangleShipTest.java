@@ -102,6 +102,6 @@ public class RectangleShipTest {
     RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", c1, 2, 3, 's', '*');
     assertThrows(IllegalArgumentException.class,()->s1.checkCoordinateInThisShip(c2));
   }
-
+  
   
 }
