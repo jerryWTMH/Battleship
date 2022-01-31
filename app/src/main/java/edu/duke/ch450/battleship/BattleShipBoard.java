@@ -23,7 +23,7 @@ public class BattleShipBoard<T> implements Board<T>{
     this.width = w;
     this.height = h;
     this.myShips = new ArrayList<Ship<T>>();
-    this.placementChecker = new InBoundsRuleChecker<T>(null);
+    this.placementChecker = new InBoundsRuleChecker<T>(new NoCollisionRuleChecker<T>(null) );
     if (w <= 0) {
       throw new IllegalArgumentException("BattleShipBoard's width must be positive but is " + w);
     }
@@ -37,6 +37,9 @@ public class BattleShipBoard<T> implements Board<T>{
    */
 
   public boolean tryAddShip(Ship<T> toAdd){
+    if(placementChecker.checkPlacement(toAdd, this) == false){
+      throw new IllegalArgumentException("The ship cannot be added into the board! Because it violates the Rules");
+    }
     this.myShips.add(toAdd);
     return true;
   }

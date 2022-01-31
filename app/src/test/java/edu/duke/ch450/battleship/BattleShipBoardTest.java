@@ -72,4 +72,22 @@ public class BattleShipBoardTest {
     }
   }
 
+  @Test
+  public void test_try_add_ship_checkrule(){
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8);
+    V1ShipFactory factory = new V1ShipFactory();
+    Placement v1_2 = new Placement(new Coordinate(1,2), 'V');
+    Ship<Character> c = factory.makeCarrier(v1_2);
+    board.tryAddShip(c);
+
+    Placement h5_2 = new Placement(new Coordinate(5,2), 'H');
+    Ship<Character> d = factory.makeDestroyer(h5_2);
+    assertThrows(IllegalArgumentException.class, ()->board.tryAddShip(d));
+
+    Placement v7_2 = new Placement(new Coordinate(7,2), 'V');
+    Ship<Character> b = factory.makeBattleship(v7_2);
+    assertThrows(IllegalArgumentException.class, ()->board.tryAddShip(b));
+
+    
+  }
 }

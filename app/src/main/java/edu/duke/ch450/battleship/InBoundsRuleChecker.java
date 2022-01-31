@@ -21,7 +21,7 @@ public class InBoundsRuleChecker<T> extends PlacementRuleChecker<T> {
     // TODO Auto-generated method stub
     Iterable<Coordinate> set = theShip.getCoordinates();
     for(Coordinate coordi: set){
-      if(coordi.getRow() <= 0 || coordi.getRow() >= theBoard.getHeight() || coordi.getColumn() <= 0 || coordi.getColumn() >= theBoard.getWidth()){
+      if(coordi.getRow() < 0 || coordi.getRow() >= theBoard.getHeight() || coordi.getColumn() < 0 || coordi.getColumn() >= theBoard.getWidth()){
         return false;
       }
     }
