@@ -1,6 +1,7 @@
 package edu.duke.ch450.battleship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +13,9 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 public class TextPlayerTest {
-
+  /**
+   * This is the helper function to help you to create a TextPlayer
+*/
   private TextPlayer createTextPlayer(int w, int h, String inputData, OutputStream bytes) {
     BufferedReader input = new BufferedReader(new StringReader(inputData));
     PrintStream output = new PrintStream(bytes, true);
@@ -25,11 +28,6 @@ public class TextPlayerTest {
   void test_read_placement() throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer player = createTextPlayer(10, 20, "B2V\nC8H\na4v\n", bytes);
-    /*StringReader sr = new StringReader("B2V\nC8H\na4v\n");
-    PrintStream ps = new PrintStream(bytes, true);
-    Board<Character> b = new BattleShipBoard<Character>(3, 2);
-    TextPlayer player = new TextPlayer(b, new BufferedReader(sr), ps, new V1ShipFactory(), "A");*/
-    //App app = new App(b, sr, bytes);
     String prompt = "Please enter a location for a ship:";
     Placement[] expected = new Placement[3];
     expected[0] = new Placement(new Coordinate(1, 2), 'V');
@@ -45,7 +43,7 @@ public class TextPlayerTest {
 
 
   /**
-   * add one ship into our board, and test whether it is correct ornot with the
+   * test_do_one_replacement() add one ship into our board, and test whether it is correct ornot with the
    * function of doOnePlacement() in App.java
    */
   
@@ -53,18 +51,29 @@ public class TextPlayerTest {
   @Test
   void test_do_one_replacement() throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    TextPlayer player = createTextPlayer(3, 3, "A0H\n", bytes);
-    /*StringReader sr = new StringReader("A0H\n");
-    PrintStream ps = new PrintStream(bytes, true);
-    Board<Character> b = new BattleShipBoard<Character>(3, 2);
-    TextPlayer player = new TextPlayer(b, new BufferedReader(sr), ps, new V1ShipFactory(), "A");*/
-    //App app = new App(b, sr, bytes);
-    String expectedHeader = "  0|1|2\n";
-    String expectedBody = "A d|d|d A\n" + "B  | |  B\n" + "C  | |  C\n";
-    String expected = "Player " + player.name + " " + "where would you like to put your ship?\n" + expectedHeader + expectedBody + expectedHeader
-        + "\n";
-    player.doOnePlacement();
+    TextPlayer player = createTextPlayer(5, 5, "B1H\n", bytes);
+    String expectedHeader = "  0|1|2|3|4\n";
+    String expectedBody = "A  | | | |  A\n" + "B  |d|d|d|  B\n" + "C  | | | |  C\n" + "D  | | | |  D\n" + "E  | | | |  E\n";
+    String expected = "Player " + player.name + " " + "where do you want to place a Destroyer?\n" + expectedHeader + expectedBody + expectedHeader;
+    V1ShipFactory factory = new V1ShipFactory();
+    player.doOnePlacement("Destroyer", (p)-> factory.makeDestroyer(p));
     assertEquals(expected, bytes.toString());
   }
+
+  /*@Test
+  void test_setupShipCreationMap(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer player = createTextPlayer(5, 5, "B1H\n", bytes);
+    player.setupShipCreationMap();
+    for(String key: player.shipCreationFns.keySet()){
+      if(key == "Submarine"){
+        V1ShipFactory factory = new V1ShipFactory();
+        Ship<Character> s1 = factory.makeSubmarine(new Placement("B1H"));
+        assertEquals("Submarine", s1.getName());
+        Ship<Character> s2 = player.shipCreationFns.get(key);
+      }
+      
+    }
+  }*/
 
 }

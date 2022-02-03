@@ -3,6 +3,10 @@ package edu.duke.ch450.battleship;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.function.Function;
 
 public class TextPlayer {
   final Board<Character> theBoard;
@@ -11,6 +15,21 @@ public class TextPlayer {
   final PrintStream out;
   final V1ShipFactory factory;
   String name;
+  final ArrayList<String> shipsToPlace;
+  final HashMap<String, Function<Placement, Ship<Character>>> shipCreationFns;
+  
+  protected void setupShipCreationMap(){
+    shipCreationFns.put("Submarine", (p)->factory.makeSubmarine(p));
+    shipCreationFns.put("Destroyer", (p)->factory.makeDestroyer(p));
+    shipCreationFns.put("Battleship", (p)->factory.makeBattleship(p));
+    shipCreationFns.put("Carrier", (p)->factory.makeCarrier(p));
+  }
+  protected void setupShipCreationList(){
+    shipsToPlace.addAll(Collections.nCopies(2, "Submarine"));
+    shipsToPlace.addAll(Collections.nCopies(2, "Destroyer"));
+    shipsToPlace.addAll(Collections.nCopies(2, "Battleship"));
+    shipsToPlace.addAll(Collections.nCopies(2, "Carrier"));
+  }
 
   public TextPlayer(Board<Character> theBoard, BufferedReader inputReader, PrintStream out, V1ShipFactory factory,
       String name) {
@@ -20,6 +39,8 @@ public class TextPlayer {
     this.out = out;
     this.factory = factory;
     this.name = name;
+    this.shipsToPlace = new ArrayList<String>();
+    this.shipCreationFns = new HashMap<String, Function<Placement, Ship<Character>>>();
   }
 
   /**
@@ -38,16 +59,13 @@ public class TextPlayer {
    * coordinate for the ship and then add the ship into the board
    */
 
-  public void doOnePlacement() throws IOException {
-    String prompt = "Player " + name + " where would you like to put your ship?";
-    Placement p1 = readPlacement(prompt);
-    Coordinate coordi = p1.getWhere();
-    final AbstractShipFactory<Character> shipFactory;
-    shipFactory = new V1ShipFactory();
-    Ship<Character> s = shipFactory.makeDestroyer(p1);
+  public void doOnePlacement(String shipName, Function<Placement, Ship<Character>> createFn) throws IOException {
+    Placement p = readPlacement("Player " + name + " where do you want to place a " + shipName + "?");
+    Ship<Character> s = createFn.apply(p);
     theBoard.tryAddShip(s);
-    out.println(view.displayMyOwnBoard());
+    out.print(view.displayMyOwnBoard());
   }
+  
 
   /**
    * doPlacementPhase() will printout an empty board first And then print out the
@@ -60,8 +78,12 @@ public class TextPlayer {
         + " you are going to place the following ships (which are all rectangular). For each ship, type the coordinate of the upper left side of the ship, followed by either H (for horizontal) or V (for vertical).  For example M4H would place a ship horizontally starting at M4 and going to the right.  You have\n\n"
         + "2 \"Submarines\" ships that are 1x2\n" + "3 \"Destroyers\" that are 1x3\n"
         + "3 \"Battleships\" that are 1x4\n" + "2 \"Carriers\" that are 1x6\n";
-
-    doOnePlacement();
+    out.println(prompt);
+    setupShipCreationMap();
+    setupShipCreationList();
+    for(String s : shipsToPlace){
+      doOnePlacement(s, shipCreationFns.get(s));
+    }
 
   }
 }
