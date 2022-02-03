@@ -82,12 +82,26 @@ public class BattleShipBoardTest {
 
     Placement h5_2 = new Placement(new Coordinate(5,2), 'H');
     Ship<Character> d = factory.makeDestroyer(h5_2);
-    assertThrows(IllegalArgumentException.class, ()->board.tryAddShip(d));
+    assertEquals("That placement is invalid: the ship overlaps another ship.", board.tryAddShip(d));
 
     Placement v7_2 = new Placement(new Coordinate(7,2), 'V');
     Ship<Character> b = factory.makeBattleship(v7_2);
-    assertThrows(IllegalArgumentException.class, ()->board.tryAddShip(b));
+    assertEquals("That placement is invalid: the ship goes off the bottom of the board.", board.tryAddShip(b));
+  }
 
+
+  @Test
+  public void test_fireAt(){
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(9,9);
+    V1ShipFactory factory = new V1ShipFactory();
+    Coordinate coordi = new Coordinate(2,0);
+    Placement h2_0 = new Placement(coordi, 'H');
+    Ship<Character> s = factory.makeCarrier(h2_0);
+    board.tryAddShip(s);
+    assertSame(s, board.fireAt(coordi));
+    board.fireAt(new Coordinate(2,1));
+    assertEquals(true, s.isSunk());
+    
     
   }
 }
