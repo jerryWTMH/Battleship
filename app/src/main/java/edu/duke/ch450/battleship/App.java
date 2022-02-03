@@ -10,42 +10,42 @@ import java.io.PrintStream;
 import java.io.Reader;
 
 public class App {
-  final Board<Character> theBoard;
-  final BoardTextView view;
-  final BufferedReader inputReader;
-  final PrintStream out;
+  private TextPlayer player1;
+  private TextPlayer player2;
 
-  public App(Board<Character> theBoard, Reader inputSource, PrintStream out) {
+  public App(TextPlayer player1, TextPlayer player2){
+    this.player1 = player1;
+    this.player2 = player2;
+  }
+  
+  /*public App(Board<Character> theBoard, Reader inputSource, PrintStream out) {
     this.theBoard = theBoard;
     this.view = new BoardTextView(theBoard);
     this.inputReader = new BufferedReader(inputSource);
-    this.out = out;
+    this.out = out;    
+    }*/
+
+  /**
+   * It will call the doPlacementPhase of each players(in TextPlayer.java)
+   * And then print out the related information on the command line
+   */
+  public void doPlacementPhase() throws IOException{
+    this.player1.doPlacementPhase();
+    this.player2.doPlacementPhase();
   }
 
-  public Placement readPlacement(String prompt) throws IOException {
-    out.println(prompt);
-    String s = inputReader.readLine();
-    return new Placement(s);
-  }
-
-  public void doOnePlacement() throws IOException {
-    String prompt = "Where would you like to put your ship?";
-    Placement p1 = readPlacement(prompt);
-    Coordinate coordi = p1.getWhere();
-    final AbstractShipFactory<Character> shipFactory;
-    shipFactory = new V1ShipFactory();
-    Ship<Character> s = shipFactory.makeDestroyer(p1);
-    theBoard.tryAddShip(s);
-    out.println(view.displayMyOwnBoard());
-
-  }
-
+  
   public static void main(String[] args) throws IOException {
-    Board<Character> b1 = new BattleShipBoard<Character>(10, 20);
+    BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(10, 10);
+    BattleShipBoard<Character> b2 = new BattleShipBoard<Character>(10, 10);
     InputStreamReader r = new InputStreamReader(System.in);
+    BufferedReader br = new BufferedReader(r);
     PrintStream out = System.out;
-    App app = new App(b1, r, out);
-    app.doOnePlacement();
-
+    V1ShipFactory factory = new V1ShipFactory();
+    TextPlayer player1 = new TextPlayer(b1,br,out,factory,"A");
+    TextPlayer player2 = new TextPlayer(b2,br,out,factory,"B");
+    App app = new App(player1, player2);
+    //app.doOnePlacement();
+    app.doPlacementPhase();
   }
 }

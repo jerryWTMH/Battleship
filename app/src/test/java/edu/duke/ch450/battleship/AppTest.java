@@ -10,68 +10,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.io.StringReader;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.api.parallel.Resources;
 
 class AppTest {
-  /*
-   * @Test void appHasAGreeting() { App classUnderTest = new App();
-   * assertNotNull(classUnderTest.getGreeting(), "app should have a greeting"); }
-   */
-  @Test
-  void test_read_placement() throws IOException {
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    App app = generate_app_helper("B2V\nC8H\na4v\n", bytes);
-    String prompt = "Please enter a location for a ship:";
-    Placement[] expected = new Placement[3];
-    expected[0] = new Placement(new Coordinate(1, 2), 'V');
-    expected[1] = new Placement(new Coordinate(2, 8), 'H');
-    expected[2] = new Placement(new Coordinate(0, 4), 'V');
-    for (int i = 0; i < expected.length; i++) {
-      Placement p = app.readPlacement(prompt);
-      assertEquals(p, expected[i]); // did we get the right Placement back
-      assertEquals(prompt + "\n", bytes.toString()); // should have printed prompt and newline
-      bytes.reset(); // clear out bytes for next time around
-    }
-  }
-
-  /**
-   * A helper function to automatically generate an app. It would have
-   * StringReader, PrintSream, Board as three input parameters.
-   */
-  @Test
-  App generate_app_helper(String str, ByteArrayOutputStream bytes) {
-    StringReader sr = new StringReader(str);
-    PrintStream ps = new PrintStream(bytes, true);
-    Board<Character> b = new BattleShipBoard<Character>(3, 2);
-    App app = new App(b, sr, ps);
-    return app;
-  }
-
-  /**
-   * add one ship into our board, and test whether it is correct ornot with the
-   * function of doOnePlacement() in App.java
-   */
-  @Test
-  void test_do_one_replacement() throws IOException {
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    App app = generate_app_helper("A0H\n", bytes);
-    String expectedHeader = "  0|1|2\n";
-    String expectedBody = "A d|d|d A\n" + "B  | |  B\n";
-    String expected = "Where would you like to put your ship?\n" + expectedHeader + expectedBody + expectedHeader
-        + "\n";
-    app.doOnePlacement();
-    assertEquals(expected, bytes.toString());
-  }
-
   /**
    * Test main function, and we would like to use input.txt and out.txt to record
    * the input and output from our test.
    */
+  
   @Test
   @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
   void test_main() throws IOException {
