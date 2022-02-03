@@ -64,7 +64,7 @@ public class BattleShipBoardTest {
     for(int i = 0 ; i < expected.length; i++){
       for(int j = 0; j < expected[0].length; j++){
         Coordinate coordi = new Coordinate(i,j);
-        if(expected[i][j] != b.whatIsAt(coordi)){
+        if(expected[i][j] != b.whatIsAtForSelf(coordi)){
           throw new IllegalArgumentException("The BattleShipBoard is not the same as expected\n");
         }
         
@@ -96,11 +96,13 @@ public class BattleShipBoardTest {
     V1ShipFactory factory = new V1ShipFactory();
     Coordinate coordi = new Coordinate(2,0);
     Placement h2_0 = new Placement(coordi, 'H');
-    Ship<Character> s = factory.makeCarrier(h2_0);
+    Ship<Character> s = factory.makeSubmarine(h2_0);
     board.tryAddShip(s);
     assertSame(s, board.fireAt(coordi));
     board.fireAt(new Coordinate(2,1));
     assertEquals(true, s.isSunk());
+    // Testing if the enemy fire at the miss place!
+    board.fireAt(new Coordinate(7,7));
     
     
   }

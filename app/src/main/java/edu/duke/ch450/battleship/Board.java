@@ -8,7 +8,7 @@ public interface Board<T> {
   /**
    * Get what is the value of the element at input coordinate
    */
-  public T whatIsAt(Coordinate where);
+  public T whatIsAtForSelf(Coordinate where);
 
   /*
    * 

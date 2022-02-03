@@ -75,7 +75,11 @@ public class BattleShipBoard<T> implements Board<T> {
   /**
    * Get what is the value of the element at input coordinate
    */
-  public T whatIsAt(Coordinate where) {
+  public T whatIsAtForSelf(Coordinate where) {
+    return whatIsAt(where, true);
+  }
+
+  protected T whatIsAt(Coordinate where, boolean isSelf){
     for (Ship<T> s : myShips) {
       if (s.occupiesCoordinates(where)) {
         return s.getDisplayInfoAt(where);

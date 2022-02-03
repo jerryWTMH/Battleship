@@ -37,10 +37,10 @@ public class BoardTextView{
         sb.append(" ");
         for(int j = 0 ; j < toDisplay.getWidth(); j++){
           Coordinate coordi = new Coordinate(i,j);
-          if(toDisplay.whatIsAt(coordi) == null){
+          if(toDisplay.whatIsAtForSelf(coordi) == null){
             sb.append(" ");
           } else{
-            sb.append(toDisplay.whatIsAt(coordi));
+            sb.append(toDisplay.whatIsAtForSelf(coordi));
           }
           
           if(j != toDisplay.getWidth() - 1){
