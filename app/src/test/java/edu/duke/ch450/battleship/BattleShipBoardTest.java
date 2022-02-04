@@ -125,4 +125,23 @@ public class BattleShipBoardTest {
     board.tryAddShip(s);
     assertThrows(IllegalArgumentException.class,()->board.whatIsAtForEnemy(new Coordinate(3,6)));
   }
+
+  @Test
+  public void test_allSunk(){
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(6,6,'X');
+    V1ShipFactory factory = new V1ShipFactory();
+    Placement p1 = new Placement("A0H");
+    Placement p2 = new Placement("B0H");
+    Ship<Character> s1 = factory.makeSubmarine(p1);
+    Ship<Character> d1 = factory.makeDestroyer(p2);
+    board.tryAddShip(s1);
+    board.tryAddShip(d1);
+    board.fireAt(new Coordinate(0,0));
+    board.fireAt(new Coordinate(0,1));
+    assertEquals(false, board.allSunk());
+    board.fireAt(new Coordinate(1,0));
+    board.fireAt(new Coordinate(1,1));
+    board.fireAt(new Coordinate(1,2));
+    assertEquals(true, board.allSunk());
+  }
 }

@@ -59,7 +59,6 @@ public class BattleShipBoard<T> implements Board<T> {
     return null;      
  }
   
-
   /**
    * Try to add ship into the ship ArrayList!
    * @param toAdd is the ship you want to add to the board.
@@ -102,6 +101,23 @@ public class BattleShipBoard<T> implements Board<T> {
   
   public T whatIsAtForEnemy(Coordinate where) {
     return whatIsAt(where, false);
+  }
+
+  /*
+   * allSink() is to check whether all the ships on the board are sunk or not
+   * It will use the isSunk function to check whether the condition of all ships
+*/
+  public boolean allSunk(){
+    int counter = 0;
+    for(Ship<T> ship : myShips){
+      if(ship.isSunk()){
+        counter++;
+      }
+    }
+    if(counter == myShips.size()){
+      return true;
+    }
+    return false;
   }
 
 }
