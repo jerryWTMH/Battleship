@@ -27,11 +27,11 @@ public class BoardTextView {
   }
 
   public String displayMyOwnBoard() {
-    return displayAnyBoard((c)->toDisplay.whatIsAtForSelf(c));
+    return displayAnyBoard((c) -> toDisplay.whatIsAtForSelf(c));
   }
 
-  public String displayEnemyBoard(){
-    return displayAnyBoard((c)->toDisplay.whatIsAtForEnemy(c));
+  public String displayEnemyBoard() {
+    return displayAnyBoard((c) -> toDisplay.whatIsAtForEnemy(c));
   }
 
   /**
@@ -84,5 +84,62 @@ public class BoardTextView {
     }
     ans.append("\n");
     return ans.toString();
+  }
+
+  protected String spaceGenerator(int len) {
+    /*
+     * if (len == 0) { return null; }
+     */
+    StringBuilder s = new StringBuilder();
+    for (int i = 0; i < len; i++) {
+      s.append(" ");
+    }
+    String str = s.toString();
+    return str;
+  }
+
+  public String displayMyBoardWithEnemyNextToIt(BoardTextView enemyView, String myHeader, String enemyHeader) {
+    int width = toDisplay.getWidth();
+    int bodySpace = 16;
+    int bodySpace2 = 18;
+    int headStart = 5;
+    int headSpace = 2 * width + 22 - myHeader.length() - headStart;
+    String start = spaceGenerator(headStart);
+    String headS = spaceGenerator(headSpace);
+    String bodyS = spaceGenerator(bodySpace);
+    String bodyS2 = spaceGenerator(bodySpace2);
+    // generate headline
+    StringBuilder builder = new StringBuilder();
+    builder = first_line_header_helper(builder,start, myHeader, headS, enemyHeader);
+    // generate body
+    String[] myLines = displayMyOwnBoard().split("\n");
+    String[] enemyLines = enemyView.displayEnemyBoard().split("\n");
+    builder = header_body_helper(builder, myLines[0], bodyS2, enemyLines[0]);
+    int counter = 1;
+    while (counter < myLines.length - 1) {
+      builder = header_body_helper(builder, myLines[counter], bodyS, enemyLines[counter]);
+      counter++;
+    }
+    builder = header_body_helper(builder, myLines[myLines.length - 1], bodyS2, enemyLines[myLines.length - 1]);
+    return builder.toString();
+
+  }
+
+  public StringBuilder first_line_header_helper(StringBuilder sb, String start ,String myHeader, String headerBody, String enemyHeader){
+    sb.append("\n");
+    sb.append(start);
+    sb.append(myHeader);
+    sb.append(headerBody);
+    sb.append(enemyHeader);
+    sb.append("\n");
+  return sb;
+  }
+  
+  public StringBuilder header_body_helper(StringBuilder sb, String myOneLine, String headerBody, String enemyOneLine) {
+    sb.append(myOneLine);
+    sb.append(headerBody);
+    sb.append(enemyOneLine);
+    sb.append("\n");
+    return sb;
   }
 }
