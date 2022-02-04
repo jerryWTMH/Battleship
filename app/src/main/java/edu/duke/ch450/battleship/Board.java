@@ -14,4 +14,5 @@ public interface Board<T> {
    * 
 */
   public Ship<T> fireAt(Coordinate c);
+  public T whatIsAtForEnemy(Coordinate where);
 }

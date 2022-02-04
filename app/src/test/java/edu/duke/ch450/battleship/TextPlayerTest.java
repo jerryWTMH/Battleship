@@ -1,10 +1,11 @@
 package edu.duke.ch450.battleship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -19,7 +20,7 @@ public class TextPlayerTest {
   private TextPlayer createTextPlayer(int w, int h, String inputData, OutputStream bytes) {
     BufferedReader input = new BufferedReader(new StringReader(inputData));
     PrintStream output = new PrintStream(bytes, true);
-    Board<Character> board = new BattleShipBoard<Character>(w, h);
+    Board<Character> board = new BattleShipBoard<Character>(w, h, 'X');
     V1ShipFactory shipFactory = new V1ShipFactory();
     return new TextPlayer(board, input, output, shipFactory, "A");
   }
@@ -75,5 +76,17 @@ public class TextPlayerTest {
       
     }
   }*/
+  @Test
+  public void test_doOnePlacement_null(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer player = createTextPlayer(10, 20, "", bytes);
+    String prompt = "checkcheckcheck";
+    assertThrows(EOFException.class, ()->player.readPlacement(prompt));
+  }
 
+  /*@Test
+  public void test_doPlacementPhase(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer player = createTextPlayer(4,4)
+  }*/
 }

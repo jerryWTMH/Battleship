@@ -6,8 +6,11 @@ import java.util.HashMap;
 public abstract class BasicShip<T> implements Ship<T>{
   protected ShipDisplayInfo<T> myDisplayInfo;
   protected HashMap<Coordinate, Boolean> myPieces;
-  public BasicShip(Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo){
+  protected ShipDisplayInfo<T> enemyDisplayInfo;
+  
+  public BasicShip(Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo){
     this.myDisplayInfo = myDisplayInfo;
+    this.enemyDisplayInfo = enemyDisplayInfo;
     myPieces = new HashMap<Coordinate, Boolean>();
     for(Coordinate c : where){
       myPieces.put(c, false);
@@ -59,17 +62,21 @@ public abstract class BasicShip<T> implements Ship<T>{
   }
 
  @Override
-  public T getDisplayInfoAt(Coordinate where) {
+ public T getDisplayInfoAt(Coordinate where, boolean myShip) {
     //TODO this is not right.  We need to
     //look up the hit status of this coordinate
    checkCoordinateInThisShip(where);
-   return myDisplayInfo.getInfo(where, wasHitAt(where));
+   if(myShip == true){
+     return myDisplayInfo.getInfo(where, myPieces.get(where));
+   }
+   return enemyDisplayInfo.getInfo(where, myPieces.get(where));
   }
 
   @Override
   public Iterable<Coordinate> getCoordinates(){
     return myPieces.keySet();
   }
+
 
   
 }

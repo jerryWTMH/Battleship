@@ -9,6 +9,7 @@ public class BattleShipBoard<T> implements Board<T> {
   private final ArrayList<Ship<T>> myShips;
   private final PlacementRuleChecker<T> placementChecker;
   HashSet<Coordinate> enemyMisses;
+  final T missInfo;
 
   public int getWidth() {
     return this.width;
@@ -18,7 +19,7 @@ public class BattleShipBoard<T> implements Board<T> {
     return this.height;
   };
 
-  public BattleShipBoard(int w, int h) {
+  public BattleShipBoard(int w, int h, T missInfo) {
     /**
      * Constructs a BattleShipBoard with the specified width and height
      * 
@@ -38,7 +39,7 @@ public class BattleShipBoard<T> implements Board<T> {
       throw new IllegalArgumentException("BattleShipBoard's height must be positive but is " + h);
     }
     this.enemyMisses = new HashSet<Coordinate>();
-
+    this.missInfo = missInfo;
   }
 
   /**
@@ -61,6 +62,7 @@ public class BattleShipBoard<T> implements Board<T> {
 
   /**
    * Try to add ship into the ship ArrayList!
+   * @param toAdd is the ship you want to add to the board.
    */
 
   public String tryAddShip(Ship<T> toAdd) {
@@ -74,18 +76,32 @@ public class BattleShipBoard<T> implements Board<T> {
 
   /**
    * Get what is the value of the element at input coordinate
+   * @param where is the coordinate you want to get the value
+   * @param isSelf is the boolean to determine whether it is me or the enemy.(me is true, enemy is false)
    */
+  
+  protected T whatIsAt(Coordinate where, boolean isSelf){
+    if(where.getColumn() > width - 1 || where.getRow() > height - 1){
+      throw new IllegalArgumentException("The coordinate is out of bound ");
+    }
+    for (Ship<T> s : myShips) {
+      if (s.occupiesCoordinates(where)) {
+        return s.getDisplayInfoAt(where, isSelf);
+      }
+    }
+    if(isSelf == false && enemyMisses.contains(where)){
+      return missInfo;
+    }
+    return null;
+  }
+
   public T whatIsAtForSelf(Coordinate where) {
     return whatIsAt(where, true);
   }
 
-  protected T whatIsAt(Coordinate where, boolean isSelf){
-    for (Ship<T> s : myShips) {
-      if (s.occupiesCoordinates(where)) {
-        return s.getDisplayInfoAt(where);
-      }
-    }
-    return null;
+  
+  public T whatIsAtForEnemy(Coordinate where) {
+    return whatIsAt(where, false);
   }
 
 }

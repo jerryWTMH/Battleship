@@ -13,7 +13,7 @@ public class InBoundsRuleCheckerTest {
     Ship<Character> b = factory.makeBattleship(v1_2);
     Placement h1_2 = new Placement(new Coordinate(1,2), 'H');
     Ship<Character> c = factory.makeCarrier(h1_2);
-    BattleShipBoard<Character> board = new BattleShipBoard<Character>(4,4);
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(4,4,'X');
     PlacementRuleChecker<Character> i = new InBoundsRuleChecker<Character>(null);
     assertEquals(null, i.checkMyRule(s, board));
     //assertEquals("1", i.checkPlacement(s, board));

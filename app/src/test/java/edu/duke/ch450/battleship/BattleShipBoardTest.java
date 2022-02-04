@@ -10,7 +10,7 @@ public class BattleShipBoardTest {
    */
   @Test
   public void test_width_and_height() {
-    Board<Character> b1 = new BattleShipBoard<Character>(10, 20);
+    Board<Character> b1 = new BattleShipBoard<Character>(10, 20, 'X');
     assertEquals(10, b1.getWidth());
     assertEquals(20, b1.getHeight());   
   }
@@ -20,10 +20,10 @@ public class BattleShipBoardTest {
   
   @Test
   public void test_invalid_dimensions(){
-    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(10,0));
-    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(0,20));
-    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(10,-5));
-    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(-8,20));
+    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(10,0,'X'));
+    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(0,20,'X'));
+    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(10,-5,'X'));
+    assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<Character>(-8,20,'X'));
   }
 
   /**
@@ -42,7 +42,7 @@ public class BattleShipBoardTest {
 
   @Test
   public void test_each_elements(){
-    BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(5,5);
+    BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(5,5,'X');
     Character[][] expected = new Character[5][5];
     checkWhatIsAtBoard(b1, expected);
     
@@ -74,7 +74,7 @@ public class BattleShipBoardTest {
 
   @Test
   public void test_try_add_ship_checkrule(){
-    BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8);
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8,'X');
     V1ShipFactory factory = new V1ShipFactory();
     Placement v1_2 = new Placement(new Coordinate(1,2), 'V');
     Ship<Character> c = factory.makeCarrier(v1_2);
@@ -92,7 +92,7 @@ public class BattleShipBoardTest {
 
   @Test
   public void test_fireAt(){
-    BattleShipBoard<Character> board = new BattleShipBoard<Character>(9,9);
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(9,9, 'X');
     V1ShipFactory factory = new V1ShipFactory();
     Coordinate coordi = new Coordinate(2,0);
     Placement h2_0 = new Placement(coordi, 'H');
@@ -103,7 +103,26 @@ public class BattleShipBoardTest {
     assertEquals(true, s.isSunk());
     // Testing if the enemy fire at the miss place!
     board.fireAt(new Coordinate(7,7));
-    
-    
+  }
+
+  @Test
+  public void test_whatIsAtForEnemy(){
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8,'X');
+    V1ShipFactory factory = new V1ShipFactory();
+    Coordinate coordi = new Coordinate(3,0);
+    Placement v2_0 = new Placement(coordi,'V');
+    Ship<Character> s = factory.makeSubmarine(v2_0);
+    board.tryAddShip(s);
+    assertEquals(null,board.whatIsAtForEnemy(new Coordinate(3,6)));
+  }
+  @Test
+   public void test_whatIsAt_out_of_bound(){
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(4,4,'X');
+    V1ShipFactory factory = new V1ShipFactory();
+    Coordinate coordi = new Coordinate(3,0);
+    Placement v2_0 = new Placement(coordi,'V');
+    Ship<Character> s = factory.makeSubmarine(v2_0);
+    board.tryAddShip(s);
+    assertThrows(IllegalArgumentException.class,()->board.whatIsAtForEnemy(new Coordinate(3,6)));
   }
 }

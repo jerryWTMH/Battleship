@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.Function;
+import java.io.EOFException;
 
 public class TextPlayer {
   final Board<Character> theBoard;
@@ -25,10 +26,10 @@ public class TextPlayer {
     shipCreationFns.put("Carrier", (p)->factory.makeCarrier(p));
   }
   protected void setupShipCreationList(){
-    shipsToPlace.addAll(Collections.nCopies(2, "Submarine"));
-    shipsToPlace.addAll(Collections.nCopies(2, "Destroyer"));
-    shipsToPlace.addAll(Collections.nCopies(2, "Battleship"));
-    shipsToPlace.addAll(Collections.nCopies(2, "Carrier"));
+    shipsToPlace.addAll(Collections.nCopies(1, "Submarine"));
+    shipsToPlace.addAll(Collections.nCopies(1, "Destroyer"));
+    shipsToPlace.addAll(Collections.nCopies(1, "Battleship"));
+    shipsToPlace.addAll(Collections.nCopies(1, "Carrier"));
   }
 
   public TextPlayer(Board<Character> theBoard, BufferedReader inputReader, PrintStream out, V1ShipFactory factory,
@@ -48,9 +49,12 @@ public class TextPlayer {
    * collect for the user about the Placement that they wanna put the ship return
    * the Placement!
    */
-  public Placement readPlacement(String prompt) throws IOException {
+  public Placement readPlacement(String prompt) throws IOException, EOFException {
     out.println(prompt);
     String s = inputReader.readLine();
+    if(s == null){
+      throw new EOFException("The input is Empty!");
+    }
     return new Placement(s);
   }
 

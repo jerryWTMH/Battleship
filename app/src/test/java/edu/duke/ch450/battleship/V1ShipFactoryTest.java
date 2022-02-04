@@ -15,7 +15,7 @@ public class V1ShipFactoryTest {
         throw new IllegalArgumentException("The location is not in the ship! ");
       }
 
-      if (testShip.getDisplayInfoAt(coordi) != expectedLetter) {
+      if (testShip.getDisplayInfoAt(coordi,true) != expectedLetter) {
         throw new IllegalArgumentException("The information at the location is not match with the expectedLetter1");
       }
     }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class NoCollisionRuleCheckerTest {
   @Test
   public void test_no_collision() {
-    BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8);
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8,'X');
     V1ShipFactory factory = new V1ShipFactory();
     Placement v1_2 = new Placement(new Coordinate(1,2), 'V');
     Ship<Character> c = factory.makeCarrier(v1_2);
@@ -22,7 +22,7 @@ public class NoCollisionRuleCheckerTest {
   public void test_combine_rules(){
     PlacementRuleChecker<Character> i1 = new NoCollisionRuleChecker<Character>(null);
     PlacementRuleChecker<Character> i2 = new InBoundsRuleChecker<Character>(i1);
-    BattleShipBoard<Character> board = new BattleShipBoard<Character>(9,9);
+    BattleShipBoard<Character> board = new BattleShipBoard<Character>(9,9,'X');
     V1ShipFactory factory = new V1ShipFactory();
     Placement v1_2 = new Placement(new Coordinate(1,2), 'V');
     Ship<Character> c = factory.makeCarrier(v1_2);

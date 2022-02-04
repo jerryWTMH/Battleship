@@ -36,8 +36,8 @@ public class App {
 
   
   public static void main(String[] args) throws IOException {
-    BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(10, 10);
-    BattleShipBoard<Character> b2 = new BattleShipBoard<Character>(10, 10);
+    BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(10, 10, 'X');
+    BattleShipBoard<Character> b2 = new BattleShipBoard<Character>(10, 10, 'X');
     InputStreamReader r = new InputStreamReader(System.in);
     BufferedReader br = new BufferedReader(r);
     PrintStream out = System.out;

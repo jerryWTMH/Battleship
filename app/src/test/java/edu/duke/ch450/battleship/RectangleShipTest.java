@@ -95,12 +95,19 @@ public class RectangleShipTest {
     //assertThrows(IllegalArgumentException.class, ()->s1.)
   }
 
+
+  
   @Test
   public void test_coordinate_not_in_ship(){
     Coordinate c1 = new Coordinate(8,4);
     Coordinate c2 = new Coordinate(7,5);
+    Coordinate c3 = new Coordinate(0,0);
     RectangleShip<Character> s1 = new RectangleShip<Character>("submarine", c1, 2, 3, 's', '*');
     assertThrows(IllegalArgumentException.class,()->s1.checkCoordinateInThisShip(c2));
+    
+    // Testing for the fourth constructor
+    RectangleShip<Character> s2 = new RectangleShip<Character>("submarine", c2, 's', '*');
+    assertThrows(IllegalArgumentException.class,()->s1.checkCoordinateInThisShip(c3));
   }
   
   
