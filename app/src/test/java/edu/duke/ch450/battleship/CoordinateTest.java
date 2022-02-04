@@ -65,5 +65,12 @@ public class CoordinateTest {
     assertThrows(IllegalArgumentException.class, () -> new Coordinate("A12"));
   }
 
+  @Test
+  public void test_boundCheck(){
+    Coordinate coordi = new Coordinate(5,5);
+    assertEquals(false, coordi.boundCheck(2,2));
+    assertEquals(true, coordi.boundCheck(8,8));
+  }
+
   
 }

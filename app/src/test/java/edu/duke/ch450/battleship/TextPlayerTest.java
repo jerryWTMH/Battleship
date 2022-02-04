@@ -81,9 +81,68 @@ public class TextPlayerTest {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer player = createTextPlayer(10, 20, "", bytes);
     String prompt = "checkcheckcheck";
-    assertThrows(EOFException.class, ()->player.readPlacement(prompt));
+    assertThrows(EOFException.class, ()->player.readPlacement(prompt));  
   }
 
+
+  @Test
+  void test_read_coordinate() throws IOException{
+    //Test IOException
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer playerIOE = createTextPlayer(4, 4, "", bytes);
+    assertThrows(IOException.class,()->playerIOE.readCoordinate());
+    bytes.reset();
+    //Test wrong format coordinate
+    TextPlayer playerFormat = createTextPlayer(4, 4, "%3\na3\n", bytes);
+    assertEquals(0, playerFormat.readCoordinate().getRow());
+    bytes.reset();
+    //Test out of bound
+    TextPlayer playerBound = createTextPlayer(4, 25, "Z3\ng3\n", bytes);
+    playerBound.readCoordinate();
+    String expected = "Please enter the fire location:\n"+
+      "The coordinate is out of the bound!\n"+
+        "Please enter the fire location:\n";
+    assertEquals(expected, bytes.toString());
+  }
+
+  @Test
+  void test_play_one_turn() throws IOException{
+     Board<Character> b = new BattleShipBoard(4,3,'X');
+     V1ShipFactory f = new V1ShipFactory();
+     Ship<Character> s = f.makeDestroyer(new Placement("B1h"));
+     b.tryAddShip(s);
+     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+     TextPlayer player = createTextPlayer(4, 3, "B2\nc2\nb1\n", bytes);
+     player.playOneTurn(b, "B");
+     player.playOneTurn(b, "B");
+     bytes.reset();
+     player.playOneTurn(b, "B");
+     String expected = "Player A's turn:\n\n"+
+         "     Your ocean               Player B's ocean:\n"+
+          "  0|1|2|3                    0|1|2|3\n"+
+   "A  | | |  A                A  | | |  A\n"+
+   "B  | | |  B                B  | |d|  B\n"+
+   "C  | | |  C                C  | |X|  C\n"+
+        "  0|1|2|3                    0|1|2|3\n"+
+       "\nPlease enter the fire location:\n"+
+         "You hit a Destroyer!\n";
+       
+     assertEquals(expected, bytes.toString());
+  }
+
+  @Test
+  public void test_check_allSunk(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BattleShipBoard<Character> board = new BattleShipBoard(4,3,'X');
+     V1ShipFactory f = new V1ShipFactory();
+     Ship<Character> s = f.makeSubmarine(new Placement("B0h"));
+     board.tryAddShip(s);
+     s.wasHitAt(new Coordinate(1,0));
+     s.wasHitAt(new Coordinate(1,1));
+     TextPlayer player = createTextPlayer(4, 3, "B2\nc2\nb1\n", bytes);
+     assertEquals(true, player.checkLose());
+  }
+  
   /*@Test
   public void test_doPlacementPhase(){
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();

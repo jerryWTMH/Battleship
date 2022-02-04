@@ -47,5 +47,22 @@ public class App {
     App app = new App(player1, player2);
     //app.doOnePlacement();
     app.doPlacementPhase();
+    app.doAttackingPhase();
   }
+
+    public void doAttackingPhase() throws IOException {
+    do {
+      player1.playOneTurn(player2.theBoard, player2.getName());
+      if (player2.checkLose() == true) {
+        System.out.println("Congratulations! Player " + player1.getName() + " you win!");
+        break;
+      }
+      player2.playOneTurn(player1.theBoard, player1.getName());
+      if (player1.checkLose() == true) {
+        System.out.println("Congratulations! Player " + player2.getName() + " you win!");
+        break;
+      }
+    } while (true);
+  }
+
 }

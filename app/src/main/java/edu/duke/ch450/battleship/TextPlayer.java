@@ -18,6 +18,18 @@ public class TextPlayer {
   String name;
   final ArrayList<String> shipsToPlace;
   final HashMap<String, Function<Placement, Ship<Character>>> shipCreationFns;
+  final HashMap<Character, String> shipMap;
+
+  public String getName(){
+    return name;
+  }
+  
+  protected void setupShipMap(){
+    shipMap.put('s', "Submarine");
+    shipMap.put('d', "Destroyer");
+    shipMap.put('b', "Battleship");
+    shipMap.put('c', "Carrier");
+  }
   
   protected void setupShipCreationMap(){
     shipCreationFns.put("Submarine", (p)->factory.makeSubmarine(p));
@@ -42,6 +54,7 @@ public class TextPlayer {
     this.name = name;
     this.shipsToPlace = new ArrayList<String>();
     this.shipCreationFns = new HashMap<String, Function<Placement, Ship<Character>>>();
+    this.shipMap = new HashMap<Character, String>();
   }
 
   /**
@@ -88,6 +101,52 @@ public class TextPlayer {
     for(String s : shipsToPlace){
       doOnePlacement(s, shipCreationFns.get(s));
     }
+  }
 
+  public Coordinate readCoordinate() throws IOException{
+    String s = null;
+    Boolean indicator = false;
+    Coordinate fireCoordinate = null;
+    do{
+      out.println("Please enter the fire location:");
+      s = inputReader.readLine();
+      if(s == null){
+        throw new IOException("The input of coordinate of fire is empty or invalid!\n");
+      }
+      try{
+        fireCoordinate = new Coordinate(s);
+        indicator = fireCoordinate.boundCheck(theBoard.getWidth(), theBoard.getHeight());
+        if(indicator == false){
+          out.println("The coordinate is out of the bound!");
+        }
+      }catch(IllegalArgumentException illegalArg){
+        out.print(illegalArg.getMessage());
+        continue;
+      }
+
+    }while(indicator == false);
+    return fireCoordinate;
+  }
+
+  public void playOneTurn(Board<Character> enemyBoard, String enemyName) throws IOException{
+    setupShipMap();
+    out.println("Player " + name + "'s turn:");
+    String enemyHeadLine = "Player " + enemyName + "'s ocean:";
+    BoardTextView enemyBoardTextView = new BoardTextView(enemyBoard);
+    out.println(view.displayMyBoardWithEnemyNextToIt(enemyBoardTextView,"Your ocean", enemyHeadLine));
+    Coordinate fireCoordinate = readCoordinate();
+    Character loc = enemyBoard.whatIsAtForSelf(fireCoordinate);
+    Ship<Character> fireShip = enemyBoard.fireAt(fireCoordinate);
+    if(fireShip == null){
+      out.println("You missed!");
+    } else{
+        String shipName = shipMap.get(loc);
+        out.println("You hit a " + shipName + "!");
+      }
+    
+  }
+
+  public boolean checkLose(){
+    return theBoard.allSunk();
   }
 }

@@ -64,5 +64,20 @@ public class Coordinate {
     this.row = ch - 'A';
     this.column = row_number;
   }
+
+  /*
+   * boundCheck will help us to check whether the coordinate locates inside of the Board.
+   * true represents not out of the bound. false represents out of the bound
+   * @param w is the Board's width
+   * @param h is the Board's height
+*/
+  public boolean boundCheck(int w, int h){
+    if(row >= h || column >= w){
+      return false;
+    }
+    return true;
+  }
+
+  
   
 }
