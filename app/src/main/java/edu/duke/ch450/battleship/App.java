@@ -34,6 +34,10 @@ public class App {
     this.player2.doPlacementPhase();
   }
 
+  public void doOptions(){
+    
+  }
+
   
   public static void main(String[] args) throws IOException {
     BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(10, 10, 'X');

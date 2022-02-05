@@ -11,8 +11,6 @@ public class V2ShipFactory extends V1ShipFactory {
        Battleship<Character> b1 = new Battleship<Character>(where, where.getWhere(), letter,'*');
        return b1;
      } else{
-       // TODO
-       // Carrier
       Carrier<Character> c1 = new Carrier<Character>(where, where.getWhere(), letter,'*');
        return c1;
      }

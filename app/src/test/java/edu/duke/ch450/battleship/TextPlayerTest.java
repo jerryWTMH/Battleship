@@ -108,7 +108,7 @@ public class TextPlayerTest {
     assertEquals(expected, bytes.toString());
   }
 
-  @Test
+  /*@Test
   void test_play_one_turn() throws IOException{
      Board<Character> b = new BattleShipBoard(4,3,'X');
      V1ShipFactory f = new V1ShipFactory();
@@ -131,7 +131,7 @@ public class TextPlayerTest {
          "You hit a Destroyer!\n";
        
      assertEquals(expected, bytes.toString());
-  }
+     }*/
 
   @Test
   public void test_check_allSunk(){

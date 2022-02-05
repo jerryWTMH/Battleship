@@ -51,12 +51,10 @@ public class TextPlayer {
    */
   protected void setupShipCreationList() {
     shipsToPlace.addAll(Collections.nCopies(1, "Submarine"));
-    shipsToPlace.addAll(Collections.nCopies(1, "Destroyer"));
+    shipsToPlace.addAll(Collections.nCopies(0, "Destroyer"));
     shipsToPlace.addAll(Collections.nCopies(1, "Battleship"));
-    shipsToPlace.addAll(Collections.nCopies(1, "Carrier"));
+    shipsToPlace.addAll(Collections.nCopies(0, "Carrier"));
   }
-
-  
 
   public TextPlayer(Board<Character> theBoard, BufferedReader inputReader, PrintStream out, V1ShipFactory factory,
       V2ShipFactory factory2, String name) {
@@ -140,6 +138,45 @@ public class TextPlayer {
     }
   }
 
+  public Character readOptions() throws IOException {
+    String s = null;
+    Character decision = 'F';
+    Boolean indicator = false;
+    HashMap<Character, Integer> options = theBoard.getOptionsMap();
+    do {
+      out.println("Possible actions for Player " + name + ":\n\n" + " F Fire at a square\n"
+          + " M Move a ship to another square (" + options.get('M') + " remaining)\n" + " S Sonar scan ("
+          + options.get('S') + " remaining)\n" + "Player " + name + ", what would you like to do?\n");
+      s = inputReader.readLine();
+      try {
+        if (s == null) {
+          throw new IOException("The Input Of Options Should Not Be Empty!\n");
+        }
+        s = s.toUpperCase();
+        if(s.length() != 1){
+          throw new IOException("The Format of Options Input Is Not Correct!\n");
+        }
+        char c = s.charAt(0);
+        if(options.containsKey(c) == false){
+          throw new IOException("The Input Of Options Is Invalid!\n");
+        }
+        if(options.get(c) <= 0){
+          throw new IOException("The Remaining Time Of Action Is Not Enough!\n");
+        }
+        int counter = options.get(c);
+        options.put(c,(counter - 1));
+        decision = c;
+        indicator = true;
+        
+      } catch (IOException e) {
+        out.print(e.getMessage());
+        continue;
+      }
+
+    } while (indicator == false);
+    return decision;
+  }
+
   public Coordinate readCoordinate() throws IOException {
     String s = null;
     Boolean indicator = false;
@@ -165,12 +202,7 @@ public class TextPlayer {
     return fireCoordinate;
   }
 
-  public void playOneTurn(Board<Character> enemyBoard, String enemyName) throws IOException {
-    setupShipMap();
-    out.println("Player " + name + "'s turn:");
-    String enemyHeadLine = "Player " + enemyName + "'s ocean:";
-    BoardTextView enemyBoardTextView = new BoardTextView(enemyBoard);
-    out.println(view.displayMyBoardWithEnemyNextToIt(enemyBoardTextView, "Your ocean", enemyHeadLine));
+  public void optionFire(Board<Character> enemyBoard) throws IOException{
     Coordinate fireCoordinate = readCoordinate();
     Character loc = enemyBoard.whatIsAtForSelf(fireCoordinate);
     Ship<Character> fireShip = enemyBoard.fireAt(fireCoordinate);
@@ -180,6 +212,71 @@ public class TextPlayer {
       String shipName = shipMap.get(loc);
       out.println("You hit a " + shipName + "!");
     }
+  }
+
+  public Coordinate readSonaCoordinate(Board<Character> enemyBoard) throws IOException{
+    String s = null;
+    Boolean indicator = false;
+    Coordinate SonaCoordinate = null;
+    do {
+      out.println("Please enter the Sona location:");
+      s = inputReader.readLine();
+      try {
+        SonaCoordinate = new Coordinate(s);
+        indicator = SonaCoordinate.boundCheck(theBoard.getWidth(), theBoard.getHeight());
+        if (indicator == false) {
+          out.println("The Coordinate Of Sona Is Out Of The Bound!\n");
+        }
+      } catch (IllegalArgumentException illegalArg) {
+        out.print(illegalArg.getMessage());
+        continue;
+      }
+
+    } while (indicator == false);
+    return SonaCoordinate;
+  }
+
+  public void optionSona(Board<Character> enemyBoard) throws IOException{
+    Coordinate sonaCoordinate = readSonaCoordinate(enemyBoard);
+    HashMap<Character, Integer> result = sonaCoordinate.sonaCheck(enemyBoard);
+    //////////////////////
+    Character loc = enemyBoard.whatIsAtForSelf(sonaCoordinate);
+    Ship<Character> fireShip = enemyBoard.fireAt(fireCoordinate);
+    if (fireShip == null) {
+      out.println("You missed!");
+    } else {
+      String shipName = shipMap.get(loc);
+      out.println("You hit a " + shipName + "!");
+    }
+  }
+
+  
+
+  public void optionsExecutor(Character decision, Board<Character> enemyBoard, String enemyName) throws IOException{
+    ///////HAVEN'T FINISHED!
+    if(decision == 'F'){
+      optionFire(enemyBoard);
+    }
+    //////AND SO ON
+  }
+
+  public void playOneTurn(Board<Character> enemyBoard, String enemyName) throws IOException {
+    setupShipMap();
+    out.println("Player " + name + "'s turn:");
+    String enemyHeadLine = "Player " + enemyName + "'s ocean";
+    BoardTextView enemyBoardTextView = new BoardTextView(enemyBoard);
+    out.println(view.displayMyBoardWithEnemyNextToIt(enemyBoardTextView, "Your ocean", enemyHeadLine));
+    Character decision = readOptions();
+    optionsExecutor(decision, enemyBoard, enemyName);
+    /*Coordinate fireCoordinate = readCoordinate();
+    Character loc = enemyBoard.whatIsAtForSelf(fireCoordinate);
+    Ship<Character> fireShip = enemyBoard.fireAt(fireCoordinate);
+    if (fireShip == null) {
+      out.println("You missed!");
+    } else {
+      String shipName = shipMap.get(loc);
+      out.println("You hit a " + shipName + "!");
+      }*/
 
   }
 

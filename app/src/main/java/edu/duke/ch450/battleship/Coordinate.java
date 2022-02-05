@@ -1,5 +1,7 @@
 package edu.duke.ch450.battleship;
 
+import java.util.HashMap;
+
 /**
  * This is the Coordinate class to record the row and column On top of that,
  * there are some functions to help user to get more information about the
@@ -76,6 +78,26 @@ public class Coordinate {
       return false;
     }
     return true;
+  }
+
+  public HashMap<Character, Integer> sonaCheck(Board<Character> enemyBoard){
+    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+    int r = this.row;
+    int c = this.column;
+    int r_min = (r - 3) <= 0 ? 0 : (r - 3);
+    int c_min = (c - 3) <= 0 ? 0 : (c - 3);
+    int r_max = (r + 3) >= enemyBoard.getHeight()? enemyBoard.getHeight():(r + 3);
+    int c_max = (c + 3) >= enemyBoard.getWidth()? enemyBoard.getWidth():(c + 3);
+    for(int i = r_min; i <= r_max; i++){
+      for(int j = c_min; j <= c_max; j++){
+        Coordinate coordi = new Coordinate(i,j);
+        if(enemyBoard.whatIsAtForEnemy(coordi) != null){
+          Character key = enemyBoard.whatIsAtForEnemy(coordi);
+          map.put(key,map.getOrDefault(key, 0)+ 1);
+        }
+      }
+    }
+    return map;
   }
 
   

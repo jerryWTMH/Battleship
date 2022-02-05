@@ -1,6 +1,7 @@
 package edu.duke.ch450.battleship;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class BattleShipBoard<T> implements Board<T> {
@@ -10,6 +11,7 @@ public class BattleShipBoard<T> implements Board<T> {
   private final PlacementRuleChecker<T> placementChecker;
   HashSet<Coordinate> enemyMisses;
   final T missInfo;
+  protected HashMap<Character, Integer> optionsMap;
 
   public int getWidth() {
     return this.width;
@@ -40,6 +42,7 @@ public class BattleShipBoard<T> implements Board<T> {
     }
     this.enemyMisses = new HashSet<Coordinate>();
     this.missInfo = missInfo;
+    this.optionsMap = initializeOptionsMap();
   }
 
   /**
@@ -118,6 +121,18 @@ public class BattleShipBoard<T> implements Board<T> {
       return true;
     }
     return false;
+  }
+
+  public HashMap<Character, Integer> initializeOptionsMap(){
+    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+    map.put('F', 1000000);
+    map.put('M', 3);
+    map.put('S', 3);
+    return map;
+  }
+
+  public HashMap<Character, Integer> getOptionsMap(){
+    return this.optionsMap;
   }
 
 }

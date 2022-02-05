@@ -22,7 +22,6 @@ class AppTest {
    * Test main function, and we would like to use input.txt and out.txt to record
    * the input and output from our test.
    */
-  
   @Test
   @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
   void test_main() throws IOException {
