@@ -7,7 +7,18 @@ public abstract class BasicShip<T> implements Ship<T>{
   protected ShipDisplayInfo<T> myDisplayInfo;
   protected HashMap<Coordinate, Boolean> myPieces;
   protected ShipDisplayInfo<T> enemyDisplayInfo;
+  public Placement oldPlacement;
   
+  public BasicShip(Placement oldPlacement,Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo){
+    this.myDisplayInfo = myDisplayInfo;
+    this.enemyDisplayInfo = enemyDisplayInfo;
+    this.oldPlacement = oldPlacement;
+    myPieces = new HashMap<Coordinate, Boolean>();
+    for(Coordinate c : where){
+      myPieces.put(c, false);
+    }
+  }
+
   public BasicShip(Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo){
     this.myDisplayInfo = myDisplayInfo;
     this.enemyDisplayInfo = enemyDisplayInfo;

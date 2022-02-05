@@ -42,8 +42,9 @@ public class App {
     BufferedReader br = new BufferedReader(r);
     PrintStream out = System.out;
     V1ShipFactory factory = new V1ShipFactory();
-    TextPlayer player1 = new TextPlayer(b1,br,out,factory,"A");
-    TextPlayer player2 = new TextPlayer(b2,br,out,factory,"B");
+    V2ShipFactory factory2 = new V2ShipFactory();
+    TextPlayer player1 = new TextPlayer(b1,br,out,factory, factory2,"A");
+    TextPlayer player2 = new TextPlayer(b2,br,out,factory,factory2, "B");
     App app = new App(player1, player2);
     //app.doOnePlacement();
     app.doPlacementPhase();

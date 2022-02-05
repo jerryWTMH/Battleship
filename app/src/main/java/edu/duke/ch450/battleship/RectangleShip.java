@@ -22,6 +22,11 @@ public class RectangleShip<T> extends BasicShip<T> {
     return coordis;
   }
 
+  /**
+   *@param upperLeft coordinate of the ship
+   *@param width is the maximum width of the ship
+   *@param height is the maximum height of the ship
+*/
   public RectangleShip(String name, Coordinate upperLeft, int width, int height, ShipDisplayInfo<T> myDisplayInfo,
       ShipDisplayInfo<T> enemyDisplayInfo) {
     super(makeCoords(upperLeft, width, height), myDisplayInfo, enemyDisplayInfo);

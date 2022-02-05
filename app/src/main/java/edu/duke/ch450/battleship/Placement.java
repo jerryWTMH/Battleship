@@ -36,6 +36,21 @@ public class Placement {
     this.orientation = ori;
   }
 
+  /*public Placement(Coordinate coordi, char ori, String shipName){
+    this.where = coordi;
+    ori  = Character.toUpperCase(ori);
+    if(shipName == "Battleship" || shipName == "Carrier"){
+      if(ori != 'U' && ori != 'D' && ori != 'L' && ori != 'R'){
+        throw new IllegalArgumentException("Invalid orientation input");
+      }
+    } else{
+      if(ori != 'H' && ori != 'V'){
+      throw new IllegalArgumentException("Invalid orientation input");
+      }
+    }
+    this.orientation = ori;
+    }*/
+
   /**
    * Consructs a placement, given the string of valid format(e.g.,"A2D").
    * 
@@ -43,7 +58,18 @@ public class Placement {
    * @throws Illegalargumentexception if the string length is not 3 because of the constructor of Coordinate.
    */
 
-  public Placement(String str){
+  /*public Placement(String str){
+    str = str.toUpperCase();
+    if(str.length() != 3){
+      throw new IllegalArgumentException("Invalid input length");
+    }
+    Coordinate coordi = new Coordinate(str.substring(0,2));
+    char ori = str.charAt(2);
+    this.where = coordi;
+    this.orientation = ori;
+    }*/
+
+   public Placement(String str){
     str = str.toUpperCase();
     if(str.length() != 3){
       throw new IllegalArgumentException("Invalid input length");
@@ -55,7 +81,40 @@ public class Placement {
     char c = str.charAt(2);
     this.where = coordi;
     this.orientation = c;
-  }
+    }
+
+  public Placement(String str, String shipName){
+    str = str.toUpperCase();    
+    Coordinate coordi = new Coordinate(str.substring(0,2));
+    char ori = str.charAt(2);
+    if(shipName == "Battleship" || shipName == "Carrier"){
+      if(ori != 'U' && ori != 'D' && ori != 'L' && ori != 'R'){
+        throw new IllegalArgumentException("Invalid Orientation Input");
+      }
+    } else{
+      if(ori != 'H' && ori != 'V'){
+      throw new IllegalArgumentException("Invalid Orientation Input");
+      }
+    }
+    this.where = coordi;
+    this.orientation = ori;
+    }
+  public Placement(Coordinate coordi, Character ori, String shipName){    
+    if(shipName == "Battleship" || shipName == "Carrier"){
+      if(ori != 'U' && ori != 'D' && ori != 'L' && ori != 'R'){
+         throw new IllegalArgumentException("Invalid Orientation Input");
+        
+      }
+    } else{
+      if(ori != 'H' && ori != 'V'){
+      throw new IllegalArgumentException("Invalid Orientation Input");
+      }
+    }
+    this.where = coordi;
+    this.orientation = ori;
+    }
+
+  
 
   /**
    * This check if an object is equal to the placement.

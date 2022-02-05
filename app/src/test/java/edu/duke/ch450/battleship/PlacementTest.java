@@ -68,4 +68,22 @@ public class PlacementTest {
     assertNotEquals(p4.hashCode(), p3.hashCode());
 
   }
+
+  @Test
+  public void test_invalid_placement(){
+     assertThrows(IllegalArgumentException.class, ()-> new Placement(new Coordinate(0,0), 'H', "Carrier"));
+     assertThrows(IllegalArgumentException.class, ()-> new Placement(new Coordinate(0,0), 'H', "Carrier"));
+     assertThrows(IllegalArgumentException.class, ()-> new Placement(new Coordinate(0,0), 'U', "Destroyer"));
+     Placement p1 = new Placement(new Coordinate(0,0), 'H', "Submarine");     
+  }
+
+  /**
+     Placement(Coordinate coordi, Character ori, String shipName)
+*/
+  @Test
+  public void test_constructor(){
+     assertThrows(IllegalArgumentException.class, ()-> new Placement(new Coordinate(0,0), 'H',"Battleship"));
+     assertThrows(IllegalArgumentException.class, ()-> new Placement(new Coordinate(1,0), 'Z',"Destroyer"));
+     Placement p1 = new Placement(new Coordinate(0,2), 'H', "Submarine");
+  }
 }
