@@ -1,13 +1,4 @@
-a
-a
+[A[Aaa
 A
-a0h
-b0u
-a0h
-b0u
-f
-a0
-s
-b1
-m
-c1
+A0H
+B0U

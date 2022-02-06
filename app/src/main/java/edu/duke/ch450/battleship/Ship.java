@@ -1,6 +1,6 @@
 package edu.duke.ch450.battleship;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * This interface represents any type of Ship in our Battleship game. It is
@@ -67,6 +67,8 @@ public interface Ship<T> {
    * @return An Iterable with the coordinates that this Ship occupies
    */
   public Iterable<Coordinate> getCoordinates();
-  public ArrayList<Integer> getDamageNumber();
+  public Coordinate getOneCoordinate();
+  public HashSet<Integer> getDamageNumber();
+  public HashSet<Coordinate> mappingNewShip(HashSet<Integer> damageNumber);
 }
 

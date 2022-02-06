@@ -1,8 +1,8 @@
 package edu.duke.ch450.battleship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ public class BattleshipTest {
     Coordinate upperLeft = new Coordinate(0,0);
     Placement oldPlacement = new Placement (upperLeft, 'U', "Battleship");
     Battleship<Character> s1 = new Battleship<Character>(oldPlacement, upperLeft, 'b', '*');
-    HashSet<Coordinate> result1 = new HashSet<Coordinate>();
+    ArrayList<Coordinate> result1 = new ArrayList<Coordinate>();
     Coordinate point1 = new Coordinate(0,1);
     Coordinate point2 = new Coordinate(1,0);
     Coordinate point3 = new Coordinate(1,1);
@@ -27,7 +27,7 @@ public class BattleshipTest {
     assertEquals(true, result1.contains(point4));
     
     Battleship<Character> s2 = new Battleship<Character>(oldPlacement, upperLeft, 'b', '*');
-    HashSet<Coordinate> result2 = new HashSet<Coordinate>();
+    ArrayList<Coordinate> result2 = new ArrayList<Coordinate>();
     point1 = new Coordinate(0,0);
     point2 = new Coordinate(1,0);
     point3 = new Coordinate(1,1);
@@ -40,7 +40,7 @@ public class BattleshipTest {
     assertEquals(true, result2.contains(point4));
 
      Battleship<Character> s3 = new Battleship<Character>(oldPlacement, upperLeft, 'b', '*');
-    HashSet<Coordinate> result3 = new HashSet<Coordinate>();
+     ArrayList<Coordinate> result3 = new ArrayList<Coordinate>();
     point1 = new Coordinate(0,0);
     point2 = new Coordinate(0,1);
     point3 = new Coordinate(0,2);
@@ -53,7 +53,7 @@ public class BattleshipTest {
     assertEquals(true, result3.contains(point4));
 
     Battleship<Character> s4 = new Battleship<Character>(oldPlacement, upperLeft, 'b', '*');
-    HashSet<Coordinate> result4 = new HashSet<Coordinate>();
+    ArrayList<Coordinate> result4 = new ArrayList<Coordinate>();
     point1 = new Coordinate(0,1);
     point2 = new Coordinate(1,0);
     point3 = new Coordinate(1,1);

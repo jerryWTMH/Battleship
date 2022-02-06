@@ -42,4 +42,5 @@ public interface Board<T> {
   public HashMap<Character, Integer> initializeOptionsMap();
   public HashMap<String, Integer> collectSona(HashSet<Coordinate> sona, HashMap<String, Integer> map);
   public Ship<T> getShipFromCoordinate(Coordinate coordi);
+  public void removeShip(Coordinate oldOneCoordinate);
 }

@@ -1,5 +1,6 @@
 package edu.duke.ch450.battleship;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Battleship<T> extends BasicShip<T> {
@@ -8,8 +9,8 @@ public class Battleship<T> extends BasicShip<T> {
     return name;
   };
 
-  static HashSet<Coordinate> makeCoords(Coordinate upperLeft, Character orientation){
-    HashSet<Coordinate> coordis = new HashSet<Coordinate>();
+  static ArrayList<Coordinate> makeCoords(Coordinate upperLeft, Character orientation){
+    ArrayList<Coordinate> coordis = new ArrayList<Coordinate>();
     int start_r = upperLeft.getRow();
     int start_c = upperLeft.getColumn();
     if(orientation == 'U'){
@@ -22,9 +23,9 @@ public class Battleship<T> extends BasicShip<T> {
       coordis.add(point3);
       coordis.add(point4);
     }else if(orientation == 'R'){
-      Coordinate point1 = new Coordinate(start_r, start_c);
-      Coordinate point2 = new Coordinate(start_r + 1, start_c);
-      Coordinate point3 = new Coordinate(start_r + 1, start_c + 1);
+      Coordinate point2 = new Coordinate(start_r, start_c);
+      Coordinate point3 = new Coordinate(start_r + 1, start_c);
+      Coordinate point1 = new Coordinate(start_r + 1, start_c + 1);
       Coordinate point4 = new Coordinate(start_r + 2, start_c);
       coordis.add(point1);
       coordis.add(point2);
@@ -32,20 +33,20 @@ public class Battleship<T> extends BasicShip<T> {
       coordis.add(point4);
       
     } else if(orientation == 'D'){
-      Coordinate point1 = new Coordinate(start_r, start_c);
-      Coordinate point2 = new Coordinate(start_r, start_c + 1);
-      Coordinate point3 = new Coordinate(start_r, start_c + 2);
-      Coordinate point4 = new Coordinate(start_r + 1, start_c + 1);
+      Coordinate point4 = new Coordinate(start_r, start_c);
+      Coordinate point3 = new Coordinate(start_r, start_c + 1);
+      Coordinate point2 = new Coordinate(start_r, start_c + 2);
+      Coordinate point1 = new Coordinate(start_r + 1, start_c + 1);
       coordis.add(point1);
       coordis.add(point2);
       coordis.add(point3);
       coordis.add(point4);
 
     } else if(orientation == 'L'){
-      Coordinate point1 = new Coordinate(start_r, start_c + 1);
-      Coordinate point2 = new Coordinate(start_r + 1, start_c);
+      Coordinate point4 = new Coordinate(start_r, start_c + 1);
+      Coordinate point1 = new Coordinate(start_r + 1, start_c);
       Coordinate point3 = new Coordinate(start_r + 1, start_c + 1);
-      Coordinate point4 = new Coordinate(start_r + 2, start_c + 1);
+      Coordinate point2 = new Coordinate(start_r + 2, start_c + 1);
       coordis.add(point1);
       coordis.add(point2);
       coordis.add(point3);

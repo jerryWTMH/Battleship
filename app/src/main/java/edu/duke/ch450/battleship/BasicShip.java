@@ -3,6 +3,7 @@ package edu.duke.ch450.battleship;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public abstract class BasicShip<T> implements Ship<T>{
   protected ShipDisplayInfo<T> myDisplayInfo;
@@ -41,14 +42,14 @@ public abstract class BasicShip<T> implements Ship<T>{
     }
   }
 
-  public ArrayList<Integer> getDamageNumber(){
-    ArrayList<Integer> list = null;
+  public HashSet<Integer> getDamageNumber(){
+    HashSet<Integer> set = new HashSet<Integer>();
     if(damageNumber != null){
       for(Integer i : damageNumber){
-        list.add(i);
+        set.add(i);
       }
     }   
-    return list;
+    return set;
   }
 
   protected void checkCoordinateInThisShip(Coordinate c){
@@ -84,6 +85,10 @@ public abstract class BasicShip<T> implements Ship<T>{
    checkCoordinateInThisShip(where);
    myPieces.put(where, true);
    damageNumber.add(bodyNumber.get(where));
+   System.out.println("where: " + where);
+   System.out.println("damageNumber: " + bodyNumber.get(where));
+   
+   
   }
 
   @Override
@@ -110,6 +115,24 @@ public abstract class BasicShip<T> implements Ship<T>{
   @Override
   public Iterable<Coordinate> getCoordinates(){
     return myPieces.keySet();
+  }
+
+  public Coordinate getOneCoordinate(){
+    Coordinate c = new Coordinate(0,0);
+    for(Coordinate coordi :myPieces.keySet()){
+      return coordi;
+    }
+    return c;
+  }
+
+  public HashSet<Coordinate> mappingNewShip(HashSet<Integer> damageNumber){
+    HashSet<Coordinate> mapping = new HashSet<Coordinate>();
+    for(Coordinate coordi: myPieces.keySet()){
+      if(bodyNumber.get(coordi) >= 0 && damageNumber.contains(bodyNumber.get(coordi))){
+        mapping.add(coordi);
+      }
+    }
+    return mapping;
   }
 
 

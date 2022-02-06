@@ -1,13 +1,14 @@
 package edu.duke.ch450.battleship;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.function.Function;
-import java.io.EOFException;
 
 public class TextPlayer {
   final Board<Character> theBoard;
@@ -147,10 +148,11 @@ public class TextPlayer {
 
   }
 
-  public void doAnotherPlacement(String shipName, HashMap<String,Function<Placement, Ship<Character>>> shipCreationFns, Placement newPlacement) throws IOException{
+  public Ship<Character> doAnotherPlacement(String shipName, HashMap<String,Function<Placement, Ship<Character>>> shipCreationFns, Placement newPlacement) throws IOException{
     Ship<Character> s = shipCreationFns.get(shipName).apply(newPlacement);
     theBoard.tryAddShip(s);
-    out.print(view.displayMyOwnBoard());
+    //out.print(view.displayMyOwnBoard());
+    return s;
   }
 
   /**
@@ -213,10 +215,11 @@ public class TextPlayer {
         if (s == null) {
           throw new IOException("The Input Of Options Should Not Be Empty!\n");
         }
-        s = s.toUpperCase();
+        
         if (s.length() != 1) {
           throw new IOException("The Format of Options Input Is Not Correct!\n");
         }
+        s = s.toUpperCase();
         char c = s.charAt(0);
         if (options.containsKey(c) == false) {
           throw new IOException("The Input Of Options Is Invalid!\n");
@@ -240,6 +243,7 @@ public class TextPlayer {
 
   public void optionsExecutor(Character decision, Board<Character> enemyBoard, String enemyName) throws IOException {
     /////// HAVEN'T FINISHED!
+    decision = Character.toUpperCase(decision);
     if (decision == 'F') {
       optionFire(enemyBoard);
     }
@@ -255,8 +259,21 @@ public class TextPlayer {
   public void optionMove(Board<Character> enemyBoard) throws IOException {
     Ship<Character> oldShip = getOldShip();
     Placement newPlacement = getNewPlacement(oldShip.getName());
-    doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
-    ArrayList<Integer> damageNumber = oldShip.getDamageNumber();
+    Ship<Character> newShip = doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
+    HashSet<Integer> damageNumber = oldShip.getDamageNumber();
+    out.println("damageNumber:");
+    for(Integer i : damageNumber){
+      out.println(i);
+    }
+    HashSet<Coordinate> newMapping = newShip.mappingNewShip(damageNumber);
+    for(Coordinate coordi: newMapping){
+      newShip = theBoard.fireAt(coordi);
+    }
+    
+    // remove old ship
+    theBoard.removeShip(oldShip.getOneCoordinate());
+    out.print(view.displayMyOwnBoard());
+    
   }
 
   public Placement getNewPlacement(String shipName) throws IOException{
@@ -299,7 +316,8 @@ public class TextPlayer {
          if(s.length() != 2){
            throw new IOException("The input length of the Coordinate is wrong!");
          }
-         Coordinate coordi = new Coordinate(s.charAt(0), s.charAt(1));
+         //Coordinate coordi = new Coordinate(s.charAt(0), s.charAt(1));
+         Coordinate coordi = new Coordinate(s);
         
          if(theBoard.getShipFromCoordinate(coordi) != null){
            moveShip = theBoard.getShipFromCoordinate(coordi);

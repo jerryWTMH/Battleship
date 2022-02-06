@@ -2,8 +2,7 @@ Choose the mode:
 (A) Human v.s. Human
 (B) Human v.s. Computer
 (C) Computer v.s. Compputer
-Invalid Input!
-Invalid Input!
+Invaild Input Length!
   0|1|2|3|4|5|6|7|8|9
 A  | | | | | | | | |  A
 B  | | | | | | | | |  B
@@ -71,106 +70,3 @@ Player B: you are going to place the following ships (which are all rectangular)
 2 "Carriers" that are 1x6
 
 Player B where do you want to place a Submarine?
-  0|1|2|3|4|5|6|7|8|9
-A s|s| | | | | | | |  A
-B  | | | | | | | | |  B
-C  | | | | | | | | |  C
-D  | | | | | | | | |  D
-E  | | | | | | | | |  E
-F  | | | | | | | | |  F
-G  | | | | | | | | |  G
-H  | | | | | | | | |  H
-I  | | | | | | | | |  I
-J  | | | | | | | | |  J
-  0|1|2|3|4|5|6|7|8|9
-Player B where do you want to place a Battleship?
-  0|1|2|3|4|5|6|7|8|9
-A s|s| | | | | | | |  A
-B  |b| | | | | | | |  B
-C b|b|b| | | | | | |  C
-D  | | | | | | | | |  D
-E  | | | | | | | | |  E
-F  | | | | | | | | |  F
-G  | | | | | | | | |  G
-H  | | | | | | | | |  H
-I  | | | | | | | | |  I
-J  | | | | | | | | |  J
-  0|1|2|3|4|5|6|7|8|9
-Player A's turn:
-
-     Your ocean                           Player B's ocean
-  0|1|2|3|4|5|6|7|8|9                    0|1|2|3|4|5|6|7|8|9
-A s|s| | | | | | | |  A                A  | | | | | | | | |  A
-B  |b| | | | | | | |  B                B  | | | | | | | | |  B
-C b|b|b| | | | | | |  C                C  | | | | | | | | |  C
-D  | | | | | | | | |  D                D  | | | | | | | | |  D
-E  | | | | | | | | |  E                E  | | | | | | | | |  E
-F  | | | | | | | | |  F                F  | | | | | | | | |  F
-G  | | | | | | | | |  G                G  | | | | | | | | |  G
-H  | | | | | | | | |  H                H  | | | | | | | | |  H
-I  | | | | | | | | |  I                I  | | | | | | | | |  I
-J  | | | | | | | | |  J                J  | | | | | | | | |  J
-  0|1|2|3|4|5|6|7|8|9                    0|1|2|3|4|5|6|7|8|9
-
-Possible actions for Player A:
-
- F Fire at a square
- M Move a ship to another square (3 remaining)
- S Sonar scan (3 remaining)
-Player A, what would you like to do?
-
-Please enter the fire location:
-You hit a Submarine!
-Player B's turn:
-
-     Your ocean                           Player A's ocean
-  0|1|2|3|4|5|6|7|8|9                    0|1|2|3|4|5|6|7|8|9
-A *|s| | | | | | | |  A                A  | | | | | | | | |  A
-B  |b| | | | | | | |  B                B  | | | | | | | | |  B
-C b|b|b| | | | | | |  C                C  | | | | | | | | |  C
-D  | | | | | | | | |  D                D  | | | | | | | | |  D
-E  | | | | | | | | |  E                E  | | | | | | | | |  E
-F  | | | | | | | | |  F                F  | | | | | | | | |  F
-G  | | | | | | | | |  G                G  | | | | | | | | |  G
-H  | | | | | | | | |  H                H  | | | | | | | | |  H
-I  | | | | | | | | |  I                I  | | | | | | | | |  I
-J  | | | | | | | | |  J                J  | | | | | | | | |  J
-  0|1|2|3|4|5|6|7|8|9                    0|1|2|3|4|5|6|7|8|9
-
-Possible actions for Player B:
-
- F Fire at a square
- M Move a ship to another square (3 remaining)
- S Sonar scan (3 remaining)
-Player B, what would you like to do?
-
-Please enter the Sona location:
-Submarines occupy 2 squares
-Destroyers occupy 0 squares
-Battleships 4 squares
-Carriers occupy 0 squares
-Player A's turn:
-
-     Your ocean                           Player B's ocean
-  0|1|2|3|4|5|6|7|8|9                    0|1|2|3|4|5|6|7|8|9
-A s|s| | | | | | | |  A                A s| | | | | | | | |  A
-B  |b| | | | | | | |  B                B  | | | | | | | | |  B
-C b|b|b| | | | | | |  C                C  | | | | | | | | |  C
-D  | | | | | | | | |  D                D  | | | | | | | | |  D
-E  | | | | | | | | |  E                E  | | | | | | | | |  E
-F  | | | | | | | | |  F                F  | | | | | | | | |  F
-G  | | | | | | | | |  G                G  | | | | | | | | |  G
-H  | | | | | | | | |  H                H  | | | | | | | | |  H
-I  | | | | | | | | |  I                I  | | | | | | | | |  I
-J  | | | | | | | | |  J                J  | | | | | | | | |  J
-  0|1|2|3|4|5|6|7|8|9                    0|1|2|3|4|5|6|7|8|9
-
-Possible actions for Player A:
-
- F Fire at a square
- M Move a ship to another square (3 remaining)
- S Sonar scan (3 remaining)
-Player A, what would you like to do?
-
-Please input the Coordinate that you wanna move from:
-There is no any ship in the position that you wanna move ship!Please input the Coordinate that you wanna move from:

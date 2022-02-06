@@ -10,6 +10,7 @@ public class BattleShipBoard<T> implements Board<T> {
   private final ArrayList<Ship<T>> myShips;
   private final PlacementRuleChecker<T> placementChecker;
   HashSet<Coordinate> enemyMisses;
+  HashMap<Coordinate, T> history;
   final T missInfo;
   protected HashMap<Character, Integer> optionsMap;
 
@@ -43,6 +44,7 @@ public class BattleShipBoard<T> implements Board<T> {
     this.enemyMisses = new HashSet<Coordinate>();
     this.missInfo = missInfo;
     this.optionsMap = initializeOptionsMap();
+    this.history = new HashMap<Coordinate, T>();
   }
 
   /**
@@ -55,6 +57,7 @@ public class BattleShipBoard<T> implements Board<T> {
     for (Ship<T> s : myShips) {
       if (s.occupiesCoordinates(c)) {
         s.recordHitAt(c);
+        history.put(c,s.getDisplayInfoAt(c, false));//////
         return s;
       }
     }
@@ -100,6 +103,16 @@ public class BattleShipBoard<T> implements Board<T> {
     }
     for (Ship<T> s : myShips) {
       if (s.occupiesCoordinates(where)) {
+        /*if(s.getDisplayInfoAt(where, isSelf) != null && history.get(where) == null){
+          return null;
+        }
+        if(s.getDisplayInfoAt(where, isSelf) == null && history.get(where) != null){
+          return history.get(where);
+        }
+        else{
+        return s.getDisplayInfoAt(where, isSelf);
+        }*/
+        
         return s.getDisplayInfoAt(where, isSelf);
       }
     }
@@ -155,6 +168,15 @@ public class BattleShipBoard<T> implements Board<T> {
 
   public HashMap<Character, Integer> getOptionsMap(){
     return this.optionsMap;
+  }
+
+  public void removeShip(Coordinate oldOneCoordinate){
+    for(Ship<T> ship : myShips){
+      if(ship.occupiesCoordinates(oldOneCoordinate)){
+          myShips.remove(ship);
+          break;
+        }
+    }
   }
 
 }
