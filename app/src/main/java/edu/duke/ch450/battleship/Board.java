@@ -1,6 +1,7 @@
 package edu.duke.ch450.battleship;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public interface Board<T> {
   public int getWidth();
@@ -26,6 +27,8 @@ public interface Board<T> {
 */
   public T whatIsAtForEnemy(Coordinate where);
 
+  public T whatIsAt(Coordinate where, boolean isSelf);
+
   /**
    * allSunk helps us to make sure whether whole ships are sunk or not
    * true is allsunk, false means there are still some ships alive.
@@ -37,4 +40,6 @@ public interface Board<T> {
 */
   public HashMap<Character, Integer> getOptionsMap();
   public HashMap<Character, Integer> initializeOptionsMap();
+  public HashMap<String, Integer> collectSona(HashSet<Coordinate> sona, HashMap<String, Integer> map);
+  public Ship<T> getShipFromCoordinate(Coordinate coordi);
 }

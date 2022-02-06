@@ -1,9 +1,12 @@
 package edu.duke.ch450.battleship;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class RectangleShip<T> extends BasicShip<T> {
   final String name;
+  HashMap<Coordinate, Integer> bodyNumber = new HashMap<Coordinate, Integer>();
+  
 
   public String getName() {
     return name;

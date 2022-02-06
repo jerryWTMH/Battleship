@@ -70,18 +70,18 @@ public class Placement {
     }*/
 
    public Placement(String str){
-    str = str.toUpperCase();
-    if(str.length() != 3){
-      throw new IllegalArgumentException("Invalid input length");
-    }
-    if(str.charAt(2) != 'H' && str.charAt(2) != 'V'){
-      throw new IllegalArgumentException("Invalid orientaion input");
-    }
-    Coordinate coordi = new Coordinate(str.substring(0,2));
-    char c = str.charAt(2);
-    this.where = coordi;
-    this.orientation = c;
-    }
+         str = str.toUpperCase();
+         if(str.length() != 3){
+           throw new IllegalArgumentException("Invalid input length");
+         }
+         if(str.charAt(2) != 'H' && str.charAt(2) != 'V'){
+           throw new IllegalArgumentException("Invalid orientaion input");
+         }
+         Coordinate coordi = new Coordinate(str.substring(0,2));
+         char c = str.charAt(2);
+         this.where = coordi;
+         this.orientation = c;
+       }  
 
   public Placement(String str, String shipName){
     str = str.toUpperCase();    

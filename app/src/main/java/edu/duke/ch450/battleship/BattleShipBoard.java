@@ -82,7 +82,19 @@ public class BattleShipBoard<T> implements Board<T> {
    * @param isSelf is the boolean to determine whether it is me or the enemy.(me is true, enemy is false)
    */
   
-  protected T whatIsAt(Coordinate where, boolean isSelf){
+  public HashMap<String, Integer> collectSona(HashSet<Coordinate> sonaSet, HashMap<String, Integer> resultMap){
+    for(Coordinate coordi : sonaSet){
+      for(Ship<T> s : myShips){
+        if(s.occupiesCoordinates(coordi)){
+          resultMap.put(s.getName(),resultMap.get(s.getName())+1);
+        } 
+    }
+    }
+    return resultMap;
+    
+  }
+  
+  public T whatIsAt(Coordinate where, boolean isSelf){
     if(where.getColumn() > width - 1 || where.getRow() > height - 1){
       throw new IllegalArgumentException("The coordinate is out of bound ");
     }
@@ -104,6 +116,16 @@ public class BattleShipBoard<T> implements Board<T> {
   
   public T whatIsAtForEnemy(Coordinate where) {
     return whatIsAt(where, false);
+  }
+
+  public Ship<T> getShipFromCoordinate(Coordinate coordi){
+    for (Ship<T> s : myShips) {
+      if (s.occupiesCoordinates(coordi)) {
+        return s;
+      }
+    }
+    return null;
+    
   }
 
   /*

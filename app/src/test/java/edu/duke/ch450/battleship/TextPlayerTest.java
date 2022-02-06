@@ -23,7 +23,7 @@ public class TextPlayerTest {
     Board<Character> board = new BattleShipBoard<Character>(w, h, 'X');
     V1ShipFactory factory = new V1ShipFactory();
     V2ShipFactory factory2 = new V2ShipFactory();
-    return new TextPlayer(board, input, output, factory,factory2, "A");
+    return new TextPlayer(board, input, output, factory,factory2, "A", 'A');
   }
   
   @Test
@@ -145,6 +145,7 @@ public class TextPlayerTest {
      TextPlayer player = createTextPlayer(4, 3, "B2\nc2\nb1\n", bytes);
      assertEquals(true, player.checkLose());
   }
+
   
   /*@Test
   public void test_doPlacementPhase(){

@@ -4,41 +4,52 @@
 package edu.duke.ch450.battleship;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.Reader;
 
 public class App {
   private TextPlayer player1;
   private TextPlayer player2;
 
-  public App(TextPlayer player1, TextPlayer player2){
+  public App(TextPlayer player1, TextPlayer player2) {
     this.player1 = player1;
     this.player2 = player2;
   }
-  
-  /*public App(Board<Character> theBoard, Reader inputSource, PrintStream out) {
-    this.theBoard = theBoard;
-    this.view = new BoardTextView(theBoard);
-    this.inputReader = new BufferedReader(inputSource);
-    this.out = out;    
-    }*/
 
-  /**
-   * It will call the doPlacementPhase of each players(in TextPlayer.java)
-   * And then print out the related information on the command line
+  /*
+   * public App(Board<Character> theBoard, Reader inputSource, PrintStream out) {
+   * this.theBoard = theBoard; this.view = new BoardTextView(theBoard);
+   * this.inputReader = new BufferedReader(inputSource); this.out = out; }
    */
-  public void doPlacementPhase() throws IOException{
-    this.player1.doPlacementPhase();
-    this.player2.doPlacementPhase();
+
+  public static Character modeOptions(BufferedReader br) throws IOException {
+    System.out.println(
+        "Choose the mode: \n" + "(A) Human v.s. Human\n" + "(B) Human v.s. Computer\n" + "(C) Computer v.s. Compputer");
+    Character c = 'A';
+    while (true) {
+      String s = br.readLine();
+      try {
+        if (s == null) {
+          throw new EOFException("Empty Input!");
+        }
+        s.toUpperCase();
+        if (s.length() != 1) {
+          throw new EOFException("Invaild Input Length!");
+        }
+        c = s.charAt(0);
+        if (c != 'A' && c != 'B' && c != 'C') {
+          throw new EOFException("Invalid Input!");
+        }
+        break;
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+      }
+    }
+    return c;
   }
 
-  public void doOptions(){
-    
-  }
-
-  
   public static void main(String[] args) throws IOException {
     BattleShipBoard<Character> b1 = new BattleShipBoard<Character>(10, 10, 'X');
     BattleShipBoard<Character> b2 = new BattleShipBoard<Character>(10, 10, 'X');
@@ -47,27 +58,66 @@ public class App {
     PrintStream out = System.out;
     V1ShipFactory factory = new V1ShipFactory();
     V2ShipFactory factory2 = new V2ShipFactory();
-    TextPlayer player1 = new TextPlayer(b1,br,out,factory, factory2,"A");
-    TextPlayer player2 = new TextPlayer(b2,br,out,factory,factory2, "B");
+    Character mode = modeOptions(br);
+    TextPlayer player1;
+    TextPlayer player2;
+    if (mode == 'A') {
+      // Human v.s. Human
+      player1 = new TextPlayer(b1, br, out, factory, factory2, "A", 'A');
+      player2 = new TextPlayer(b2, br, out, factory, factory2, "B", 'A');
+    } else if (mode == 'B') {
+      // Human v.s. Computer
+      player1 = new TextPlayer(b1, br, out, factory, factory2, "A", 'A');
+      player2 = new TextPlayer(b2, br, out, factory, factory2, "A", 'B');
+    } else {
+      // Computer v.s. Computer
+      player1 = new TextPlayer(b1, br, out, factory, factory2, "A", 'B');
+      player2 = new TextPlayer(b2, br, out, factory, factory2, "A", 'B');
+    }
     App app = new App(player1, player2);
-    //app.doOnePlacement();
+    // app.doOnePlacement();
     app.doPlacementPhase();
     app.doAttackingPhase();
+
   }
 
-    public void doAttackingPhase() throws IOException {
+  /**
+   * It will call the doPlacementPhase of each players(in TextPlayer.java) And
+   * then print out the related information on the command line
+   */
+  public void doPlacementPhase() throws IOException {
+    this.player1.doPlacementPhase();
+    this.player2.doPlacementPhase();
+  }
+
+  public void doAttackingPhase() throws IOException {
+    int round = 2000;
     do {
       player1.playOneTurn(player2.theBoard, player2.getName());
       if (player2.checkLose() == true) {
-        System.out.println("Congratulations! Player " + player1.getName() + " you win!");
-        break;
+        if (player2.identity != 'A') {
+          System.out.println("Congratulations! Computer 1 win!");
+          break;
+        } else {
+          System.out.println("Congratulations! Player " + player1.getName() + " you win!");
+          break;
+        }
       }
       player2.playOneTurn(player1.theBoard, player1.getName());
       if (player1.checkLose() == true) {
-        System.out.println("Congratulations! Player " + player2.getName() + " you win!");
-        break;
+        if (player2.identity != 'A') {
+          System.out.println("Congratulations! Computer 2 win!");
+           break;
+        } else {
+          System.out.println("Congratulations! Player " + player2.getName() + " you win!");
+          break;
+        }
       }
-    } while (true);
+      round--;
+    } while (round >= 0);
+    if(round <= 0){
+      System.out.println("Congratulations! Player " + player2.getName() + " you win!");
+    }
   }
 
 }

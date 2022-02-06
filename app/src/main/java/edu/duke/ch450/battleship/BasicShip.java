@@ -1,11 +1,14 @@
 
 package edu.duke.ch450.battleship;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class BasicShip<T> implements Ship<T>{
   protected ShipDisplayInfo<T> myDisplayInfo;
   protected HashMap<Coordinate, Boolean> myPieces;
+  public HashMap<Coordinate, Integer> bodyNumber;
+  public ArrayList<Integer> damageNumber;
   protected ShipDisplayInfo<T> enemyDisplayInfo;
   public Placement oldPlacement;
   
@@ -14,8 +17,13 @@ public abstract class BasicShip<T> implements Ship<T>{
     this.enemyDisplayInfo = enemyDisplayInfo;
     this.oldPlacement = oldPlacement;
     myPieces = new HashMap<Coordinate, Boolean>();
+    int counter = 0;
+    this.bodyNumber = new HashMap<Coordinate, Integer>();
+    this.damageNumber = new ArrayList<Integer>();
     for(Coordinate c : where){
       myPieces.put(c, false);
+      bodyNumber.put(c, counter);
+      counter++;
     }
   }
 
@@ -23,9 +31,24 @@ public abstract class BasicShip<T> implements Ship<T>{
     this.myDisplayInfo = myDisplayInfo;
     this.enemyDisplayInfo = enemyDisplayInfo;
     myPieces = new HashMap<Coordinate, Boolean>();
+    int counter = 0;
+    this.bodyNumber = new HashMap<Coordinate, Integer>();
+    this.damageNumber = new ArrayList<Integer>();
     for(Coordinate c : where){
       myPieces.put(c, false);
+      bodyNumber.put(c, counter);
+      counter++;
     }
+  }
+
+  public ArrayList<Integer> getDamageNumber(){
+    ArrayList<Integer> list = null;
+    if(damageNumber != null){
+      for(Integer i : damageNumber){
+        list.add(i);
+      }
+    }   
+    return list;
   }
 
   protected void checkCoordinateInThisShip(Coordinate c){
@@ -60,6 +83,7 @@ public abstract class BasicShip<T> implements Ship<T>{
     // TODO Auto-generated method stub
    checkCoordinateInThisShip(where);
    myPieces.put(where, true);
+   damageNumber.add(bodyNumber.get(where));
   }
 
   @Override
