@@ -52,10 +52,10 @@ public class TextPlayer {
    * the game
    */
   protected void setupShipCreationList() {
-    shipsToPlace.addAll(Collections.nCopies(1, "Submarine"));
-    shipsToPlace.addAll(Collections.nCopies(0, "Destroyer"));
-    shipsToPlace.addAll(Collections.nCopies(1, "Battleship"));
-    shipsToPlace.addAll(Collections.nCopies(0, "Carrier"));
+    shipsToPlace.addAll(Collections.nCopies(2, "Submarine"));
+    shipsToPlace.addAll(Collections.nCopies(3, "Destroyer"));
+    shipsToPlace.addAll(Collections.nCopies(3, "Battleship"));
+    shipsToPlace.addAll(Collections.nCopies(2, "Carrier"));
   }
 
   /**
@@ -147,6 +147,11 @@ public class TextPlayer {
 
   }
 
+  /**
+   * doAnotherPlacement is to move the original ship into other place
+   * @param shipName just gives the type of the board
+   * @param newPlacement just give the Lamda function that help to generate a whole new ship with the new Placement
+*/
   public Ship<Character> doAnotherPlacement(String shipName,
       HashMap<String, Function<Placement, Ship<Character>>> shipCreationFns, Placement newPlacement)
       throws IOException {
@@ -185,6 +190,11 @@ public class TextPlayer {
 
   }
 
+  /**
+   * playOneTurn() could execute one whole round for the game
+   * In addition to this, the identity == 'A' means that it is human player.
+   * If the player is computer, it will execute the else statement
+*/
   public void playOneTurn(Board<Character> enemyBoard, String enemyName) throws IOException {
     if (identity == 'A') {
       setupShipMap();
@@ -200,6 +210,9 @@ public class TextPlayer {
     }
   }
 
+  /**
+   * readOptions() can read the option which is typed by the user, and redirect to the different mode for the user.
+   */
   public Character readOptions() throws IOException {
     String s = null;
     Character decision = 'F';
@@ -240,6 +253,9 @@ public class TextPlayer {
     return decision;
   }
 
+  /**
+   * This is the redirection method to help redirect!
+   */
   public void optionsExecutor(Character decision, Board<Character> enemyBoard, String enemyName) throws IOException {
     /////// HAVEN'T FINISHED!
     decision = Character.toUpperCase(decision);
@@ -255,6 +271,11 @@ public class TextPlayer {
 
   }
 
+  /**
+   * This is whole the thing the game will do when the user just choose the MOVING MODE
+   * @param enemyBoard is the board of enemyBoard
+   * It will read the new input, and create a new Placement, and then doAnotherPlacement for the new ship.
+*/
   public void optionMove(Board<Character> enemyBoard) throws IOException {
     boolean indicator = false;
     V1ShipFactory f = new V1ShipFactory();
@@ -281,43 +302,15 @@ public class TextPlayer {
       // newShip = theBoard.fireAt(coordi);
       newShip.recordHitAt(coordi);
     }
-
     // remove old ship
     theBoard.removeShip(oldShip.getOneCoordinate());
     out.print(view.displayMyOwnBoard());
-
   }
-
-  /*
-   * public void optionMove(Board<Character> enemyBoard) throws IOException {
-   * Ship<Character> oldShip = getOldShip(); Placement newPlacement =
-   * getNewPlacement(oldShip.getName()); Ship<Character> newShip =
-   * doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
-   * HashSet<Integer> damageNumber = oldShip.getDamageNumber();
-   * HashSet<Coordinate> newMapping = newShip.mappingNewShip(damageNumber);
-   * for(Coordinate coordi: newMapping){ //newShip = theBoard.fireAt(coordi);
-   * newShip.recordHitAt(coordi); }
-   * 
-   * // remove old ship theBoard.removeShip(oldShip.getOneCoordinate());
-   * out.print(view.displayMyOwnBoard());
-   * 
-   * }
-   * 
-   * public void optionMove(Board<Character> enemyBoard) throws IOException {
-   * Ship<Character> oldShip = getOldShip(); Placement newPlacement =
-   * getNewPlacement(oldShip.getName()); Ship<Character> newShip =
-   * doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
-   * HashSet<Integer> damageNumber = oldShip.getDamageNumber();
-   * HashSet<Coordinate> newMapping = newShip.mappingNewShip(damageNumber);
-   * for(Coordinate coordi: newMapping){ //newShip = theBoard.fireAt(coordi);
-   * newShip.recordHitAt(coordi); }
-   * 
-   * // remove old ship theBoard.removeShip(oldShip.getOneCoordinate());
-   * out.print(view.displayMyOwnBoard());
-   * 
-   * }
-   */
-
+  
+  /**
+   * getNewPlacement() will get the new Placement for the new ship under the MOVING MODE
+   * It will also double check whether the placement could work in the new place.
+*/
   public Placement getNewPlacement(String shipName) throws IOException {
     String s = null;
     Boolean indicator = false;
@@ -343,13 +336,14 @@ public class TextPlayer {
     return newPlacement;
   }
 
+  /**
+   * getOldShip() will help to get the old ship, because if the user choose MOVING MODE, and the program need the original ships to do the adjustment.
+*/
   public Ship<Character> getOldShip(String s) throws IOException {
     //String s = null;
     Boolean indicator = false;
     Ship<Character> moveShip = null;
     do {
-      //out.println("Please input the Coordinate that you wanna move from:");
-      //s = inputReader.readLine();
       try {
         if (s == null) {
           throw new IOException("The input of Coordinate of ship is empty or invalid!\n");
@@ -358,7 +352,6 @@ public class TextPlayer {
         if (s.length() != 2) {
           throw new IOException("The input length of the Coordinate is wrong!");
         }
-        // Coordinate coordi = new Coordinate(s.charAt(0), s.charAt(1));
         Coordinate coordi = new Coordinate(s);
 
         if (theBoard.getShipFromCoordinate(coordi) != null) {
@@ -376,6 +369,9 @@ public class TextPlayer {
     return moveShip;
   }
 
+  /**
+   * optionFire() this is the whole execution of the FIRE MODE
+*/
   public void optionFire(Board<Character> enemyBoard) throws IOException {
     Coordinate fireCoordinate = new Coordinate(0, 0);
     if (identity == 'A') {
@@ -404,7 +400,11 @@ public class TextPlayer {
     }
 
   }
-
+  
+  /**
+   * readCoordinate() can help to read the coordinate for the fire place.
+   * Additionally, it will also do the double check to see whether the fire coordinate is valid or not.
+*/
   public Coordinate readCoordinate() throws IOException {
     String s = null;
     Boolean indicator = false;
@@ -429,11 +429,12 @@ public class TextPlayer {
     } while (indicator == false);
     return fireCoordinate;
   }
-
+  /**
+   * optionSonar is the whole processure for the SONAR MODE
+*/
   public void optionSona(Board<Character> enemyBoard) throws IOException {
     Coordinate sonaCoordinate = readSonaCoordinate(enemyBoard);
     HashMap<String, Integer> result = sonaCoordinate.sonaCheck(enemyBoard);
-    //////////////////////
     int Submarine = result.get("Submarine");
     int Destroyer = result.get("Destroyer");
     int Battleship = result.get("Battleship");
@@ -442,6 +443,10 @@ public class TextPlayer {
 
   }
 
+  /**
+   * readSonaCoordinate() just help to get the location of the sonar
+   * It will also the check whether the location of sonar is valid or not?
+*/
   public Coordinate readSonaCoordinate(Board<Character> enemyBoard) throws IOException {
     String s = null;
     Boolean indicator = false;
@@ -463,7 +468,7 @@ public class TextPlayer {
     } while (indicator == false);
     return SonaCoordinate;
   }
-
+  
   public void printSonaResult(int sub, int des, int bat, int car) {
     out.println("Submarines occupy " + sub + " squares");
     out.println("Destroyers occupy " + des + " squares");

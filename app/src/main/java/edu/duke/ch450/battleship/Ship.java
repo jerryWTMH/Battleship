@@ -8,12 +8,13 @@ import java.util.HashSet;
  * display this ship.
  */
 public interface Ship<T> {
-   /**
+  /**
    * Get the name of this Ship, such as "submarine".
+   * 
    * @return the name of this ship
    */
- public String getName();
-  
+  public String getName();
+
   /**
    * Check if this ship occupies the given coordinate.
    * 
@@ -55,8 +56,9 @@ public interface Ship<T> {
    * Return the view-specific information at the given coordinate. This coordinate
    * must be part of the ship.
    * 
-   * @param where is the coordinate to return information for
-   * @param myShip boolean is to decide whether the ship belongs to me or to the enemy
+   * @param where  is the coordinate to return information for
+   * @param myShip boolean is to decide whether the ship belongs to me or to the
+   *               enemy
    * @throws IllegalArgumentException if where is not part of the Ship
    * @return The view-specific information at that coordinate.
    */
@@ -64,11 +66,23 @@ public interface Ship<T> {
 
   /**
    * Get all of the Coordinates that this Ship occupies.
+   * 
    * @return An Iterable with the coordinates that this Ship occupies
    */
   public Iterable<Coordinate> getCoordinates();
+
   public Coordinate getOneCoordinate();
+
+  /**
+   * getDamageNumber() is applied for the MOVING MODE get the Damage bodyNumber of
+   * the old Ship
+   */
   public HashSet<Integer> getDamageNumber();
+
+  /**
+   * @param damageNumber is the damageNumber set of the old ship this function
+   *                     could map the bodyNumber of the oldship into the
+   *                     corresponding coordinate
+   */
   public HashSet<Coordinate> mappingNewShip(HashSet<Integer> damageNumber);
 }
-

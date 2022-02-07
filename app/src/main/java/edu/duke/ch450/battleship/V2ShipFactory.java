@@ -2,11 +2,6 @@ package edu.duke.ch450.battleship;
 
 public class V2ShipFactory extends V1ShipFactory {
   protected Ship<Character> createShip(Placement where, int w, int h, char letter, String name){
-    /*if(where.getOrientation() == 'V'){
-      int temp = w;
-      w = h;
-      h = temp;
-      }*/
      if(name == "Battleship"){
        Battleship<Character> b1 = new Battleship<Character>(where, where.getWhere(), letter,'*');
        return b1;
