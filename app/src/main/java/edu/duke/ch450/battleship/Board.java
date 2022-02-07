@@ -1,13 +1,14 @@
 package edu.duke.ch450.battleship;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public interface Board<T> {
   public int getWidth();
   public int getHeight();
+  public String tryAddShip2(Ship<T> toAdd) throws IOException;
   public String tryAddShip(Ship<T> toAdd);
-
   /**
    * Get what is the value of the element at input coordinate of myself
    * @param where is the coordinate to check

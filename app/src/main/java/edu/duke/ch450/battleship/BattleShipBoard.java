@@ -1,5 +1,6 @@
 package edu.duke.ch450.battleship;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,7 +63,8 @@ public class BattleShipBoard<T> implements Board<T> {
       }
     }
      enemyMisses.add(c);
-    return null;      
+    return null;
+    
  }
   
   /**
@@ -70,14 +72,25 @@ public class BattleShipBoard<T> implements Board<T> {
    * @param toAdd is the ship you want to add to the board.
    */
 
-  public String tryAddShip(Ship<T> toAdd) {
+  public String tryAddShip2(Ship<T> toAdd) throws IOException {
     String placementProblem = placementChecker.checkPlacement(toAdd, this);
     if (placementProblem != null) {
-      return placementProblem;
+      throw new IOException("New Ship Has Confliction With Others");  
     }
     this.myShips.add(toAdd);
     return null;
   }
+
+  public String tryAddShip(Ship<T> toAdd){
+    String placementProblem = placementChecker.checkPlacement(toAdd, this);
+    if (placementProblem != null) {
+      return placementProblem;  
+    }
+    this.myShips.add(toAdd);
+    return null;
+  }
+
+  
 
   /**
    * Get what is the value of the element at input coordinate
@@ -96,24 +109,31 @@ public class BattleShipBoard<T> implements Board<T> {
     return resultMap;
     
   }
-  
+
+
+  /**
+   * whatIsAt can help us to get the T(or Character) on the board
+   *@param where is the coordinate that we want to know the information on it.
+   *@param isSelf, true means myself; false means enemy
+*/
   public T whatIsAt(Coordinate where, boolean isSelf){
     if(where.getColumn() > width - 1 || where.getRow() > height - 1){
       throw new IllegalArgumentException("The coordinate is out of bound ");
     }
+    
+        if(isSelf == false && history.get(where) != null){
+          return history.get(where);
+        }
     for (Ship<T> s : myShips) {
       if (s.occupiesCoordinates(where)) {
-        /*if(s.getDisplayInfoAt(where, isSelf) != null && history.get(where) == null){
+        if(isSelf == false && s.getDisplayInfoAt(where, isSelf) != null && !history.containsValue(where)){
           return null;
-        }
-        if(s.getDisplayInfoAt(where, isSelf) == null && history.get(where) != null){
-          return history.get(where);
         }
         else{
         return s.getDisplayInfoAt(where, isSelf);
-        }*/
+        }
         
-        return s.getDisplayInfoAt(where, isSelf);
+        //return s.getDisplayInfoAt(where, isSelf);
       }
     }
     if(isSelf == false && enemyMisses.contains(where)){
@@ -130,6 +150,10 @@ public class BattleShipBoard<T> implements Board<T> {
   public T whatIsAtForEnemy(Coordinate where) {
     return whatIsAt(where, false);
   }
+
+  /**
+   * getShipFromCoordinate would scan through myShips, and check which ship contains the coordinate that we give into this function.
+*/
 
   public Ship<T> getShipFromCoordinate(Coordinate coordi){
     for (Ship<T> s : myShips) {
@@ -158,6 +182,11 @@ public class BattleShipBoard<T> implements Board<T> {
     return false;
   }
 
+  
+  /**
+   * initializaOptionsMap initialize the map for different function of the game. ex: Fire, Move, Sona....
+   * In addition to this, the integer inside of the hashmap represents that the times that the user still can use
+*/
   public HashMap<Character, Integer> initializeOptionsMap(){
     HashMap<Character, Integer> map = new HashMap<Character, Integer>();
     map.put('F', 1000000);
@@ -165,11 +194,18 @@ public class BattleShipBoard<T> implements Board<T> {
     map.put('S', 3);
     return map;
   }
-
+  
+  /**
+   * getoptionsMap can help you to get the optionsMap in this class.
+*/
   public HashMap<Character, Integer> getOptionsMap(){
     return this.optionsMap;
   }
 
+  /**
+   * removeShip can use oldOneCoordinate to find out the old ship, and then remove the old ship from the myShips
+   *@param oldOneCoordinate is one of the coordinate of the old ship
+*/
   public void removeShip(Coordinate oldOneCoordinate){
     for(Ship<T> ship : myShips){
       if(ship.occupiesCoordinates(oldOneCoordinate)){

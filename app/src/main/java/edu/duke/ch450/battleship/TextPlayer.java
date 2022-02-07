@@ -82,7 +82,6 @@ public class TextPlayer {
     this.identity = identity;
   }
 
-  
   /**
    * readPlacement will print out the prompt in the first time And then ask and
    * collect for the user about the Placement that they wanna put the ship return
@@ -148,10 +147,11 @@ public class TextPlayer {
 
   }
 
-  public Ship<Character> doAnotherPlacement(String shipName, HashMap<String,Function<Placement, Ship<Character>>> shipCreationFns, Placement newPlacement) throws IOException{
+  public Ship<Character> doAnotherPlacement(String shipName,
+      HashMap<String, Function<Placement, Ship<Character>>> shipCreationFns, Placement newPlacement)
+      throws IOException {
     Ship<Character> s = shipCreationFns.get(shipName).apply(newPlacement);
-    theBoard.tryAddShip(s);
-    //out.print(view.displayMyOwnBoard());
+    theBoard.tryAddShip2(s);
     return s;
   }
 
@@ -185,7 +185,6 @@ public class TextPlayer {
 
   }
 
-
   public void playOneTurn(Board<Character> enemyBoard, String enemyName) throws IOException {
     if (identity == 'A') {
       setupShipMap();
@@ -215,7 +214,7 @@ public class TextPlayer {
         if (s == null) {
           throw new IOException("The Input Of Options Should Not Be Empty!\n");
         }
-        
+
         if (s.length() != 1) {
           throw new IOException("The Format of Options Input Is Not Correct!\n");
         }
@@ -257,26 +256,69 @@ public class TextPlayer {
   }
 
   public void optionMove(Board<Character> enemyBoard) throws IOException {
-    Ship<Character> oldShip = getOldShip();
-    Placement newPlacement = getNewPlacement(oldShip.getName());
-    Ship<Character> newShip = doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
+    boolean indicator = false;
+    V1ShipFactory f = new V1ShipFactory();
+    Ship<Character> oldShip = f.makeSubmarine(new Placement("A0H")) ;
+     Ship<Character> newShip = f.makeSubmarine(new Placement("A0H")) ;
+     String s = "";
+    do {
+      try {
+        out.println("Please input the Coordinate that you wanna move from:");
+        s = inputReader.readLine();
+        oldShip = getOldShip(s);
+        Placement newPlacement = getNewPlacement(oldShip.getName());
+        newShip = doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
+        indicator = true;
+      } catch (IOException e) {
+        out.println(e.getMessage());
+        continue;
+      }
+    } while (indicator == false);
+
     HashSet<Integer> damageNumber = oldShip.getDamageNumber();
-    out.println("damageNumber:");
-    for(Integer i : damageNumber){
-      out.println(i);
-    }
     HashSet<Coordinate> newMapping = newShip.mappingNewShip(damageNumber);
-    for(Coordinate coordi: newMapping){
-      newShip = theBoard.fireAt(coordi);
+    for (Coordinate coordi : newMapping) {
+      // newShip = theBoard.fireAt(coordi);
+      newShip.recordHitAt(coordi);
     }
-    
+
     // remove old ship
     theBoard.removeShip(oldShip.getOneCoordinate());
     out.print(view.displayMyOwnBoard());
-    
+
   }
 
-  public Placement getNewPlacement(String shipName) throws IOException{
+  /*
+   * public void optionMove(Board<Character> enemyBoard) throws IOException {
+   * Ship<Character> oldShip = getOldShip(); Placement newPlacement =
+   * getNewPlacement(oldShip.getName()); Ship<Character> newShip =
+   * doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
+   * HashSet<Integer> damageNumber = oldShip.getDamageNumber();
+   * HashSet<Coordinate> newMapping = newShip.mappingNewShip(damageNumber);
+   * for(Coordinate coordi: newMapping){ //newShip = theBoard.fireAt(coordi);
+   * newShip.recordHitAt(coordi); }
+   * 
+   * // remove old ship theBoard.removeShip(oldShip.getOneCoordinate());
+   * out.print(view.displayMyOwnBoard());
+   * 
+   * }
+   * 
+   * public void optionMove(Board<Character> enemyBoard) throws IOException {
+   * Ship<Character> oldShip = getOldShip(); Placement newPlacement =
+   * getNewPlacement(oldShip.getName()); Ship<Character> newShip =
+   * doAnotherPlacement(oldShip.getName(), shipCreationFns, newPlacement);
+   * HashSet<Integer> damageNumber = oldShip.getDamageNumber();
+   * HashSet<Coordinate> newMapping = newShip.mappingNewShip(damageNumber);
+   * for(Coordinate coordi: newMapping){ //newShip = theBoard.fireAt(coordi);
+   * newShip.recordHitAt(coordi); }
+   * 
+   * // remove old ship theBoard.removeShip(oldShip.getOneCoordinate());
+   * out.print(view.displayMyOwnBoard());
+   * 
+   * }
+   */
+
+  public Placement getNewPlacement(String shipName) throws IOException {
     String s = null;
     Boolean indicator = false;
     Placement newPlacement = null;
@@ -284,15 +326,15 @@ public class TextPlayer {
       out.println("Please input the placement of the ship you wanna move:");
       s = inputReader.readLine();
       try {
-         if (s == null) {
-        throw new IOException("The input of placement of ship is empty or invalid!\n");
-         }
-         s = s.toUpperCase();
-         if(s.length() != 3){
-           throw new IOException("The input length of the placement is wrong!");
-         }
-         newPlacement = new Placement(s, shipName);
-         indicator = true;
+        if (s == null) {
+          throw new IOException("The input of placement of ship is empty or invalid!\n");
+        }
+        s = s.toUpperCase();
+        if (s.length() != 3) {
+          throw new IOException("The input length of the placement is wrong!");
+        }
+        newPlacement = new Placement(s, shipName);
+        indicator = true;
       } catch (IOException e) {
         out.print(e.getMessage());
         continue;
@@ -300,31 +342,31 @@ public class TextPlayer {
     } while (indicator == false);
     return newPlacement;
   }
-  
-  public Ship<Character> getOldShip() throws IOException {
-    String s = null;
+
+  public Ship<Character> getOldShip(String s) throws IOException {
+    //String s = null;
     Boolean indicator = false;
     Ship<Character> moveShip = null;
     do {
-      out.println("Please input the Coordinate that you wanna move from:");
-      s = inputReader.readLine();
+      //out.println("Please input the Coordinate that you wanna move from:");
+      //s = inputReader.readLine();
       try {
-         if (s == null) {
-        throw new IOException("The input of Coordinate of ship is empty or invalid!\n");
-         }
-         s = s.toUpperCase();
-         if(s.length() != 2){
-           throw new IOException("The input length of the Coordinate is wrong!");
-         }
-         //Coordinate coordi = new Coordinate(s.charAt(0), s.charAt(1));
-         Coordinate coordi = new Coordinate(s);
-        
-         if(theBoard.getShipFromCoordinate(coordi) != null){
-           moveShip = theBoard.getShipFromCoordinate(coordi);
-         } else {
-           throw new IOException("There is no any ship in the position that you wanna move ship!");
-         }
-         indicator = true;
+        if (s == null) {
+          throw new IOException("The input of Coordinate of ship is empty or invalid!\n");
+        }
+        s = s.toUpperCase();
+        if (s.length() != 2) {
+          throw new IOException("The input length of the Coordinate is wrong!");
+        }
+        // Coordinate coordi = new Coordinate(s.charAt(0), s.charAt(1));
+        Coordinate coordi = new Coordinate(s);
+
+        if (theBoard.getShipFromCoordinate(coordi) != null) {
+          moveShip = theBoard.getShipFromCoordinate(coordi);
+        } else {
+          throw new IOException("There is no any ship in the position that you wanna move ship!");
+        }
+        indicator = true;
       } catch (IOException e) {
         out.print(e.getMessage());
         continue;

@@ -1,6 +1,10 @@
 package edu.duke.ch450.battleship;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
@@ -70,6 +74,22 @@ public class CoordinateTest {
     Coordinate coordi = new Coordinate(5,5);
     assertEquals(false, coordi.boundCheck(2,2));
     assertEquals(true, coordi.boundCheck(8,8));
+  }
+
+  @Test
+  public void test_sonaCheck(){
+   BattleShipBoard<Character> board = new BattleShipBoard<Character>(8,8,'X');
+    V1ShipFactory factory = new V1ShipFactory();
+    Coordinate coordi = new Coordinate(1,1);
+    assertThrows(IllegalArgumentException.class, ()-> new Placement("A0H", "Battleship"));
+     assertThrows(IllegalArgumentException.class, ()-> new Placement("A0U", "Submarine"));
+    Placement u0_0 = new Placement("A0U", "Battleship");
+    Ship<Character> c = factory.makeBattleship(u0_0);
+    board.tryAddShip(c);
+    HashMap<String, Integer> result = coordi.sonaCheck(board);
+    assertEquals(4, result.get("Battleship"));
+    
+    
   }
 
   

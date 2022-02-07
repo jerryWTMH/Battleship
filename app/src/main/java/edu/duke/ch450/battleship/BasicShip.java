@@ -85,8 +85,6 @@ public abstract class BasicShip<T> implements Ship<T>{
    checkCoordinateInThisShip(where);
    myPieces.put(where, true);
    damageNumber.add(bodyNumber.get(where));
-   System.out.println("where: " + where);
-   System.out.println("damageNumber: " + bodyNumber.get(where));
    
    
   }

@@ -152,4 +152,15 @@ public class TextPlayerTest {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer player = createTextPlayer(4,4)
   }*/
+
+  @Test
+  public void test_printSonaResult(){
+    int sub = 1;
+    int des = 2;
+    int bat = 3;
+    int car = 4;
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer player = createTextPlayer(5, 5, "B1H\n", bytes);
+    player.printSonaResult(sub, des, bat, car);
+  }
 }

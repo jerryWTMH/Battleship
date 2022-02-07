@@ -26,14 +26,6 @@ public class BoardTextView {
     }
   }
 
-  public String displayMyOwnBoard() {
-    return displayAnyBoard((c) -> toDisplay.whatIsAtForSelf(c));
-  }
-
-  public String displayEnemyBoard() {
-    return displayAnyBoard((c) -> toDisplay.whatIsAtForEnemy(c));
-  }
-
   /**
    * Display the board, and it consist of three parts: header, middle, header
    * middle part(Width 1 : 10, Height A : Z)
@@ -69,6 +61,15 @@ public class BoardTextView {
     return result; // this is a placeholder for the moment
   }
 
+   public String displayMyOwnBoard() {
+    return displayAnyBoard((c) -> toDisplay.whatIsAtForSelf(c));
+  }
+
+  public String displayEnemyBoard() {
+    return displayAnyBoard((c) -> toDisplay.whatIsAtForEnemy(c));
+  }
+
+  
   /**
    * This makes the header line, e.g. 0|1|2|3|4\n
    *
