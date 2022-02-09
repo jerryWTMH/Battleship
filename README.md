@@ -23,5 +23,5 @@ After placing ten ships, we can start the game.
 There are three actions for the user to use: **F**, **M**, **S**. Those represent Fire enemy ship, Move my ship, and Sonar enemy ship.
 Users can use infinite times for firing, three times for moving and sonar.
 
-After firing whole the ships of enemy, the user will win!
+After firing whole the ships of enemy, the user will win!  
 
