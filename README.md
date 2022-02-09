@@ -1,4 +1,4 @@
-# ece651-sp22-ch450-battleship
+# Battleship Game
 
 BattleShip is a command-line based Java game.
 By Choosing one of the modes(Human V.S. Human, Human V.S. Computer, Computer V.S. Computer), users can play the BattleShip game.
