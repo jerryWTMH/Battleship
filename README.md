@@ -5,8 +5,12 @@ By Choosing one of the modes(Human V.S. Human, Human V.S. Computer, Computer V.S
 
 When users get into the game, he/she can place different types of ships: Submarine, Destroyer, Battleship, Carrier.
 
-And the Placement format would be like: **A0H** -> place ship at **A0** with the orientation of **Horizontal**
-                                        **B3U** -> place ship at **B3** with the orientation of **Up**
+And the Placement format would be like: 
+```
+**A0H** -> place ship at **A0** with the orientation of **Horizontal**
+**B3U** -> place ship at **B3** with the orientation of **Up**
+```
+
 Additionally, Submarine and Destroyer only has the orientaion of **H**, **V**. (Horizontal, Vertical)
 Battleship and Carrier only has the orientations of **U**, **D**, **R**, **L**. (Up, Down, Right, Left)
 
