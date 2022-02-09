@@ -8,12 +8,12 @@ Additionally, Submarine and Destroyer only has the orientaion of **H**, **V**. (
 Battleship and Carrier only has the orientations of **U**, **D**, **R**, **L**. (Up, Down, Right, Left)
 Therefore, the Placement format would be like: 
 ```
-**A0H** -> place ship at **A0** with the orientation of **Horizontal**
-**G6V** -> place ship at **G6** with the orientation of **Vertical**
-**B3U** -> place ship at **B3** with the orientation of **Up**
-**D3D** -> place ship at **D3** with the orientation of **Down**
-**F5R** -> place ship at **F5** with the orientation of **Right**
-**C1L** -> place ship at **D3** with the orientation of **Left**
+A0H -> place ship at **A0** with the orientation of Horizontal
+G6V -> place ship at **G6** with the orientation of Vertical
+B3U -> place ship at **B3** with the orientation of Up
+D3D -> place ship at **D3** with the orientation of Down
+F5R -> place ship at **F5** with the orientation of Right
+C1L -> place ship at **D3** with the orientation of Left
 ```
 
 
