@@ -4,15 +4,19 @@ BattleShip is a command-line based Java game.
 By Choosing one of the modes(Human V.S. Human, Human V.S. Computer, Computer V.S. Computer), users can play the BattleShip game.
 
 When users get into the game, he/she can place different types of ships: Submarine, Destroyer, Battleship, Carrier.
-
-And the Placement format would be like: 
-```
-**A0H** -> place ship at **A0** with the orientation of **Horizontal**
-**B3U** -> place ship at **B3** with the orientation of **Up**
-```
-
 Additionally, Submarine and Destroyer only has the orientaion of **H**, **V**. (Horizontal, Vertical)
 Battleship and Carrier only has the orientations of **U**, **D**, **R**, **L**. (Up, Down, Right, Left)
+Therefore, the Placement format would be like: 
+```
+**A0H** -> place ship at **A0** with the orientation of **Horizontal**
+**G6V** -> place ship at **G6** with the orientation of **Vertical**
+**B3U** -> place ship at **B3** with the orientation of **Up**
+**D3D** -> place ship at **D3** with the orientation of **Down**
+**F5R** -> place ship at **F5** with the orientation of **Right**
+**C1L** -> place ship at **D3** with the orientation of **Left**
+```
+
+
 
 After placing ten ships, we can start the game.
 
